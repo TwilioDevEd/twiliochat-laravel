@@ -11,9 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get(
+    '/', ['as' => 'home', function () {
+        return response()->view('index');
+    }]
+);
+
+Route::get(
+    '/tests', ['as' => 'test', function () {
+        return response()->view('tests');
+    }]
+);
 
 /*
 |--------------------------------------------------------------------------

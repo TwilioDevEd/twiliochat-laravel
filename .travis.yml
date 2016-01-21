@@ -1,0 +1,12 @@
+language: php
+php:
+- 5.6
+- 5.5
+install:
+- composer install
+scripts:
+  - mkdir -p build/logs
+env:
+  global:
+  - APP_ENV=testing
+  - TOKEN_URL="your_token_url.com"
