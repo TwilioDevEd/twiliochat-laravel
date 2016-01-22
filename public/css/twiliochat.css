@@ -22,14 +22,30 @@ body {
 }
 
 #chat_window {
-    padding:0;
     background-color: rgba(255,255,255,0.7);
-    width: 40%;
-    height: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2.5%;
-    -webkit-box-shadow: -7px 5px 0px -1px rgba(0,0,0,0.6);
-    -moz-box-shadow: -7px 5px 0px -1px rgba(0,0,0,0.6);
-    box-shadow: -7px 5px 0px -1px rgba(0,0,0,0.6);
+    height: 100%;
+    -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+    -moz-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+    box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+}
+#container {
+    height: 80vh;
+}
+#header {
+    margin: auto;
+}
+#input_div {
+    background-color: #DED4D3;
+    height: 7%;
+}
+#message_list {
+    height: 93%;
+}
+#input_text {
+    height: 100%;
+    width: 100%;
+    background-color: #DED4D3;
+    color: black;
+    border: 0;
+    resize: none;
 }
