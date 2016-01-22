@@ -5,5 +5,6 @@
 @endsection
 
 @section('content')
-  <h1>Twilio Chat</h1>
+  <div id="chat_window" class="well">
+  </div>
 @endsection

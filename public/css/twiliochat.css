@@ -1,0 +1,35 @@
+html {
+  height: 100%;
+  padding:0;
+  margin:0;
+  background-color: #71271c;
+}
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding:0;
+  margin:0;
+  height: 100%;
+  width:100%;
+  color:#dedede;
+  background: #71271c; /* Old browsers */
+  background: -moz-linear-gradient(-45deg,  #71271c 0%, #7c362e 47%, #a53829 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg,  #71271c 0%,#7c362e 47%,#a53829 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg,  #71271c 0%,#7c362e 47%,#a53829 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#71271c', endColorstr='#a53829',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+#chat_window {
+    padding:0;
+    background-color: rgba(255,255,255,0.7);
+    width: 40%;
+    height: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2.5%;
+    -webkit-box-shadow: -7px 5px 0px -1px rgba(0,0,0,0.6);
+    -moz-box-shadow: -7px 5px 0px -1px rgba(0,0,0,0.6);
+    box-shadow: -7px 5px 0px -1px rgba(0,0,0,0.6);
+}
