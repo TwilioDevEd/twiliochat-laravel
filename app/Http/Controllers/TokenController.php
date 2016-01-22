@@ -3,25 +3,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Services_Twilio_AccessToken;
+use Services_Twilio_AccessToken as AccessToken;
+use Services_Twilio_Auth_IpMessagingGrant as IPMGrant;
 
 class TokenController extends Controller
 {
-    public function generate(Request $request)
+    public function generate(Request $request, AccessToken $accessToken, IPMGrant $ipmGrant)
     {
-        $device = $request->input("device");
+        $appName = "TwilioChat";
+        $deviceId = $request->input("deviceId");
         $identity = $request->input("identity");
 
-        $TWILIO_ACCOUNT_SID = config('services.twilio')['accountSid'];
-        $TWILIO_API_KEY = config('services.twilio')['apiKey'];
-        $TWILIO_API_SECRET = config('services.twilio')['apiSecret'];
+        $TWILIO_IPM_SERVICE_SID = config('services.twilio')['ipmServiceSid'];
 
-        $token = new Services_Twilio_AccessToken(
-            $TWILIO_ACCOUNT_SID,
-            $TWILIO_API_KEY,
-            $TWILIO_API_SECRET,
-            3600,
-            $identity
+        $endpointId = $appName . ":" . $identity . ":" . $deviceId;
+
+        $accessToken->setIdentity($identity);
+
+        $ipmGrant->setServiceSid($TWILIO_IPM_SERVICE_SID);
+        $ipmGrant->setEndpointId($endpointId);
+
+        $accessToken->addGrant($ipmGrant);
+
+        $response = array(
+            'identity' => $identity,
+            'token' => $accessToken->toJWT()
         );
 
         return response()->json($response);

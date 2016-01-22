@@ -153,6 +153,8 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TwilioAccessTokenProvider::class,
+        App\Providers\TwilioIPMGrantProvider::class,
     ],
 
     /*
