@@ -14,8 +14,7 @@
           <div class="col-md-4"></div>
       </div>
       <div id="container" class="row">
-          <div class="col-md-offset-2 col-md-2">
-              <div class="row"><h2>Channels</h2></div>
+          <div id="channel-panel" class="col-md-offset-2 col-md-2">
               <div id="channel-list" class="row"></div>
               <div class="row"><h2>Add channel</h2></div>
           </div>

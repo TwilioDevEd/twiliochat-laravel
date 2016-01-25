@@ -3,7 +3,7 @@ var GENERAL_CHANNEL_NAME = 'General Channel';
 var accessManager;
 var messagingClient;
 var generalChannel;
-var channels;
+var channelArray;
 
 var messageList;
 var channelList;
@@ -37,20 +37,36 @@ scrollToMessageListBottom = function() {
 
 loadChannelList = function() {
     if (messagingClient) {
-        messagingClient.getChannels().then(function(channelArray) {
-            channels = channelArray;
+        messagingClient.getChannels().then(function(channels) {
+            channelArray = $.map(channels, function(value, index) {
+                return [value];
+            });
+            channelArray = sortChannelsByName(channelArray);
             console.log('channels loading');
-            console.log(channelArray);
             channelList.html('');
-            $.each(channels, function(index, channel ) {
+            $.each(channelArray, function(index, channel) {
                 channelList.append(
-                    '<div class="row"><div class="col-md-12"><h3>' +
+                    '<div class="row channel-row" onClick="selectChannel(' +
+                    index +
+                    ')"><div class="col-md-12"><p class="unselected-channel">' +
                     channel.friendlyName +
-                    '</h3></div></div>'
+                    '</p></div></div>'
                 );
             });
         });
     }
+}
+
+sortChannelsByName = function(channels) {
+    return channels.sort(function(a, b) {
+        if (a.friendlyName == GENERAL_CHANNEL_NAME) {
+            return -1;
+        }
+        if (b.friendlyName == GENERAL_CHANNEL_NAME) {
+            return 1;
+        }
+        return a.friendlyName.localeCompare(b.friendlyName);
+    });
 }
 
 connectMessagingClient = function(username, handler) {
@@ -85,13 +101,13 @@ joinGeneralChannel = function(username) {
                 generalChannel = channel;
                 setupChannel();
             });
-        } else {
+        }
+        else {
             console.log('Found general channel:');
             console.log(generalChannel);
             setupChannel();
         }
     });
-    loadChannelList();
 }
 
 setupChannel = function() {
@@ -106,4 +122,5 @@ setupChannel = function() {
             addMessageToList(message.body);
         });
     }
+    loadChannelList();
 }
