@@ -14,19 +14,17 @@
           <div class="col-md-4"></div>
       </div>
       <div id="container" class="row">
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-              <div class="row">
-                  <h3>Channel List</h3>
+          <div class="col-md-offset-2 col-md-2">
+              <div class="row"><h2>Channels</h2></div>
+              <div id="channel-list" class="row"></div>
+              <div class="row"><h2>Add channel</h2></div>
+          </div>
+          <div id="chat-window" class="col-md-4">
+              <div id="message-list" class="row"></div>
+              <div id="input-div" class="row">
+                  <textarea id="input-text" autofocus placeholder="   Your message"></textarea>
               </div>
           </div>
-          <div id="chat_window" class="col-md-4">
-              <div id="message_list" class="row"></div>
-              <div id="input_div" class="row">
-                  <textarea id="input_text" type="text" placeholder="   Your message"></textarea>
-              </div>
-          </div>
-          <div class="col-md-4"></div>
       </div>
   </div>
 @endsection

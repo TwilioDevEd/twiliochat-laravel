@@ -21,7 +21,7 @@ body {
   font-family: 'Helvetica Neue', Helvetica, sans-serif;
 }
 
-#chat_window {
+#chat-window {
     background-color: rgba(255,255,255,0.7);
     height: 100%;
     -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
@@ -34,18 +34,29 @@ body {
 #header {
     margin: auto;
 }
-#input_div {
+#input-div {
     background-color: #DED4D3;
     height: 7%;
 }
-#message_list {
+#message-list {
     height: 93%;
+    overflow-y: scroll;
 }
-#input_text {
+.message-item {
+    word-wrap: break-word;
+    color: #644F52;
+}
+.full-width {
+    margin: 0;
+}
+#input-text {
     height: 100%;
     width: 100%;
     background-color: #DED4D3;
     color: black;
     border: 0;
     resize: none;
+    -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+    -moz-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+    box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
 }
