@@ -22,54 +22,65 @@ body {
 }
 
 #chat-window {
-    background-color: rgba(255,255,255,0.7);
-    height: 100%;
-    -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
-    -moz-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
-    box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+  background-color: rgba(255,255,255,0.7);
+  height: 100%;
+  -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+  -moz-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+  box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
 }
 #container {
-    height: 80vh;
+  height: 80vh;
 }
 #header {
-    margin: auto;
+  margin: auto;
 }
 #input-div {
-    background-color: #DED4D3;
-    height: 7%;
+  background-color: #DED4D3;
+  height: 7%;
 }
 #message-list {
-    height: 93%;
-    overflow-y: scroll;
+  height: 93%;
+  overflow-y: scroll;
 }
 #channel-panel {
-    border-left: 1px solid #864035;
-    box-shadow: -1px 0px 0px 0px #5D1E18;
+  border-left: 1px solid #864035;
+  box-shadow: -1px 0px 0px 0px #5D1E18;
 }
 .message-item {
-    word-wrap: break-word;
-    color: #644F52;
+  word-wrap: break-word;
+  color: #644F52;
 }
 .full-width {
-    margin: 0;
+  margin: 0;
+}
+.channel-element {
+  width: 100%;
+  height: 8vh;
+  margin: 0;
+  padding-left: 10px;
+  line-height: 8vh;
+  overflow: hidden;
 }
 .unselected-channel {
-    width: 100%;
-    height: 6vh;
+  color: #B85E51;
 }
 .unselected-channel:hover {
-    background-color: #DACAC8;
-    color: #898687;
-    cursor: pointer;
+  background-color: #F8E6E4;
+  color: #898687;
+  cursor: pointer;
+}
+.selected-channel {
+  background-color: #F8E6E4;
+  color: #898687;
 }
 #input-text {
-    height: 100%;
-    width: 100%;
-    background-color: #DED4D3;
-    color: black;
-    border: 0;
-    resize: none;
-    -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
-    -moz-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
-    box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+  height: 100%;
+  width: 100%;
+  background-color: #DED4D3;
+  color: black;
+  border: 0;
+  resize: none;
+  -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+  -moz-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+  box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
 }
