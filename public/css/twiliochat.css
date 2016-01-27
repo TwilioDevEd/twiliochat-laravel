@@ -24,54 +24,24 @@ body {
 #chat-window {
   background-color: rgba(255,255,255,0.7);
   height: 100%;
-  -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
-  -moz-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
-  box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
 }
 #container {
-  height: 80vh;
+  height: 85vh;
 }
 #header {
   margin: auto;
 }
 #input-div {
   background-color: #DED4D3;
-  height: 7%;
+  height: 5%;
 }
 #message-list {
-  height: 93%;
+  height: 75%;
   overflow-y: scroll;
 }
-#channel-panel {
-  border-left: 1px solid #864035;
-  box-shadow: -1px 0px 0px 0px #5D1E18;
-}
-.message-item {
-  word-wrap: break-word;
-  color: #644F52;
-}
-.full-width {
-  margin: 0;
-}
-.channel-element {
-  width: 100%;
-  height: 8vh;
-  margin: 0;
-  padding-left: 10px;
-  line-height: 8vh;
-  overflow: hidden;
-}
-.unselected-channel {
-  color: #B85E51;
-}
-.unselected-channel:hover {
-  background-color: #F8E6E4;
-  color: #898687;
-  cursor: pointer;
-}
-.selected-channel {
-  background-color: #F8E6E4;
-  color: #898687;
+#connect-panel {
+  height: 20%;
+  background-color: #5B1913;
 }
 #input-text {
   height: 100%;
@@ -80,7 +50,75 @@ body {
   color: black;
   border: 0;
   resize: none;
+}
+.with-shadow {
   -webkit-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
   -moz-box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
   box-shadow: -5px 5px 0px 0px rgba(0,0,0,0.53);
+}
+#channel-panel {
+  border-left: 1px solid #864035;
+  box-shadow: -1px 0px 0px 0px #5D1E18;
+}
+#channel-list {
+  max-height: 77vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.message-item {
+  word-wrap: break-word;
+  color: #644F52;
+}
+.no-margin {
+  margin: 0;
+}
+#add-channel-image {
+  padding-left: 20px;
+  height: 3vh;
+  cursor: pointer;
+}
+.channel-element {
+  width: 100%;
+  height: 6vh;
+  margin: 0;
+  padding-left: 20px;
+  line-height: 6vh;
+  overflow: hidden;
+  font-size: large;
+}
+.unselected-channel {
+  color: #D47567;
+}
+.unselected-channel:hover {
+  background-color: #F8E6E4;
+  color: #753A35;
+  cursor: pointer;
+}
+.selected-channel {
+  background-color: #F8E6E4;
+  color: #753A35;
+}
+#logo-image {
+  height: 3vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+}
+#logo-column {
+  text-align: center;
+}
+.right-align {
+  text-align: right;
+  padding: 0;
+}
+#status-span {
+  color: #EE887C;
+}
+#leave-span {
+  cursor: pointer;
+  color: #370606;
+  margin-left: 1vh;
+}
+#status-row {
+  margin-bottom: 1vh;
+  visibility: hidden;
 }

@@ -7,6 +7,8 @@ var currentChannel;
 var currentChannelContainer;
 var channelArray;
 
+var username;
+
 var messageList;
 var channelList;
 
@@ -25,7 +27,7 @@ $(document).ready(function() {
 });
 
 addMessageToList = function(message) {
-  var rowDiv = $('<div>').addClass('row full-width');
+  var rowDiv = $('<div>').addClass('row no-margin');
   var colDiv = $('<div>').addClass('col-md-12 message-item');
   var messageP = $('<p>').text(message);
   colDiv.append(messageP);
@@ -112,7 +114,6 @@ setupChannel = function(channel) {
       console.log('Joined channel ' + joinedChannel.friendlyName);
     });
 
-    console.log(channel.on);
     // Listen for new messages sent to the channel
     channel.on('messageAdded', function(message) {
       addMessageToList(message.body);
@@ -159,14 +160,12 @@ joinGeneralChannel = function() {
       friendlyName: GENERAL_CHANNEL_NAME
     }).then(function(channel) {
       console.log('Created general channel');
-      console.log(channel);
       generalChannel = channel;
-      setupChannel(generalChannel);
+      loadChannelList(joinGeneralChannel);
     });
   }
   else {
     console.log('Found general channel:');
-    console.log(generalChannel);
     setupChannel(generalChannel);
   }
 };
