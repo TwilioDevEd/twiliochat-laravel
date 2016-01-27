@@ -27,10 +27,19 @@ Twilio Chat
     <div id="chat-window" class="col-md-4 with-shadow">
       <div id="message-list" class="row"></div>
       <div id="input-div" class="row">
-        <textarea id="input-text" autofocus placeholder="   Your message"></textarea>
+        <textarea id="input-text" disabled="true" placeholder="   Your message"></textarea>
       </div>
       <div id="connect-panel" class="row with-shadow">
-
+        <div class="row">
+          <div class="col-md-12">
+            <label for="username-input">Username: </label><input id="username-input" type="text" placeholder="username"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <img id="connect-image" src="{{ asset('img/connect-image.png') }}"/>
+          </div>
+        </div>
       </div>
     </div>
   </div>

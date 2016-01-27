@@ -11,20 +11,61 @@ var username;
 
 var messageList;
 var channelList;
+var inputText;
+var usernameInput;
+var usernameSpan;
+var statusRow;
+var connectPanel;
+var connectImage;
 
 $(document).ready(function() {
   messageList = $('#message-list');
   channelList = $('#channel-list');
+  inputText = $('#input-text');
+  usernameInput = $('#username-input');
+  usernameSpan = $('#username-span');
+  statusRow = $('#status-row');
+  connectPanel = $('#connect-panel');
+  connectImage = $('#connect-image');
   scrollToMessageListBottom();
-  fetchAccessToken('mcelibrowser', connectMessagingClient)
-  $('#input-text').keypress(function(event){
-    if(event.keyCode == 13) {
+  usernameInput.focus();
+  setupListeners();
+});
+
+setupListeners = function() {
+  usernameInput.keypress(filterKeys);
+  inputText.keypress(filterKeys);
+  connectImage.click(function() {
+    connectClientWithUsername(usernameInput.val());
+  });
+}
+
+filterKeys = function(event) {
+  if(event.keyCode == 13) {
+    if (event.target.id == 'username-input') {
+      connectClientWithUsername(usernameInput.val());
+    }
+    if (event.target.id == 'input-text') {
       currentChannel.sendMessage($(this).val());
       $(this).val('');
       event.preventDefault();
     }
-  });
-});
+  }
+}
+
+connectClientWithUsername = function(usernameText) {
+  if (usernameText == '') {
+    alert('Username cannot be empty');
+    return;
+  }
+  username = usernameText;
+  fetchAccessToken(username, connectMessagingClient);
+  usernameSpan.text(username);
+  statusRow.css('visibility', 'visible');
+  messageList.css('height', '95%');
+  connectPanel.css('display', 'none');
+  inputText.addClass('with-shadow');
+}
 
 addMessageToList = function(message) {
   var rowDiv = $('<div>').addClass('row no-margin');
@@ -61,15 +102,12 @@ loadChannelList = function(handler) {
       var colDiv = $('<div>').addClass('col-md-12');
       var channelP = $('<p>').addClass('channel-element').text(channel.friendlyName);
       channelP.data('sid', channel.sid);
-      if (channel.sid == currentChannel) {
-        channelP.addClass('selected-channel');
+      if (currentChannel && channel.sid == currentChannel.sid) {
         currentChannelContainer = channelP;
+        channelP.addClass('selected-channel');
       }
       else {
         channelP.addClass('unselected-channel')
-      }
-      if (currentChannelContainer == undefined) {
-        currentChannelContainer = channelP;
       }
 
       colDiv.append(channelP);
@@ -82,44 +120,57 @@ loadChannelList = function(handler) {
   });
 };
 
+updateChannelUI = function(selectedChannel) {
+  var channelElements = $('.channel-element');
+  channelElements = $.map(channelElements, function(value, index) {
+    return value;
+  });
+  var channelElement = channelElements.filter(function(element) {
+    return $(element).data().sid === selectedChannel.sid;
+  });
+  channelElement = $(channelElement);
+  if (currentChannelContainer == undefined && selectedChannel.uniqueName == GENERAL_CHANNEL_UNIQUE_NAME) {
+    currentChannelContainer = channelElement;
+  }
+  currentChannelContainer.removeClass('selected-channel').addClass('unselected-channel');
+  channelElement.removeClass('unselected-channel').addClass('selected-channel');
+  currentChannelContainer = channelElement;
+
+}
+
 selectChannel = function(event) {
   var target = $(event.target);
   var channelSid = target.data().sid;
   var selectedChannel = channelArray.filter(function(channel) {
     return channel.sid === channelSid;
   })[0];
-
-  if (currentChannel == undefined) {
-    currentChannelContainer.removeClass('selected-channel').addClass('unselected-channel');
-    target.removeClass('unselected-channel').addClass('selected-Channel');
-    currentChannelContainer = target;
-    setupChannel(selectedChannel);
+  if (selectedChannel == currentChannel) {
+    return;
   }
-  else {
-    currentChannel.leave().then(function(channel) {
-      console.log('left ' + channel.friendlyName);
-      currentChannelContainer.removeClass('selected-channel').addClass('unselected-channel');
-      target.removeClass('unselected-channel').addClass('selected-channel');
-      currentChannelContainer = target;
-      setupChannel(selectedChannel);
-    });
-  }
+  setupChannel(selectedChannel);
 };
 
 setupChannel = function(channel) {
-  if (channel) {
+  // Join the channel
+  channel.join().then(function(joinedChannel) {
+    console.log('Joined channel ' + joinedChannel.friendlyName);
+    if (currentChannel) {
+      currentChannel.leave().then(function(leftChannel) {
+        console.log('left ' + channel.friendlyName);
+        leftChannel.removeListener('messageAdded', onMessageAdded);
+      });
+    }
+    updateChannelUI(channel);
     currentChannel = channel;
-    // Join the channel
-    channel.join().then(function(joinedChannel) {
-      console.log('Joined channel ' + joinedChannel.friendlyName);
-    });
-
-    // Listen for new messages sent to the channel
-    channel.on('messageAdded', function(message) {
-      addMessageToList(message.body);
-    });
-  }
+    channel.on('messageAdded', onMessageAdded);
+    inputText.prop('disabled', false).focus();
+    messageList.text('');
+  });
 };
+
+onMessageAdded = function(message) {
+  addMessageToList(message.body);
+}
 
 sortChannelsByName = function(channels) {
   return channels.sort(function(a, b) {

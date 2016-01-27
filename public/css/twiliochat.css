@@ -12,7 +12,6 @@ body {
   margin:0;
   height: 100%;
   width:100%;
-  color:#dedede;
   background: #71271c; /* Old browsers */
   background: -moz-linear-gradient(-45deg,  #71271c 0%, #7c362e 47%, #a53829 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(-45deg,  #71271c 0%,#7c362e 47%,#a53829 100%); /* Chrome10-25,Safari5.1-6 */
@@ -36,12 +35,22 @@ body {
   height: 5%;
 }
 #message-list {
-  height: 75%;
+  height: 80%;
   overflow-y: scroll;
 }
 #connect-panel {
-  height: 20%;
+  height: 15%;
   background-color: #5B1913;
+  text-align: center;
+  color: #DEC4C3;
+}
+#username-input {
+  width: 70%;
+  padding-left: 10px;
+  height: 5vh;
+  margin-left: 10px;
+  margin-top: 10px;
+  color: black;
 }
 #input-text {
   height: 100%;
@@ -61,7 +70,7 @@ body {
   box-shadow: -1px 0px 0px 0px #5D1E18;
 }
 #channel-list {
-  max-height: 77vh;
+  max-height: 75vh;
   overflow-y: scroll;
   overflow-x: hidden;
 }
@@ -74,7 +83,9 @@ body {
 }
 #add-channel-image {
   padding-left: 20px;
-  height: 3vh;
+  padding-top: 1.5vh;
+  padding-bottom: 1.5vh;
+  height: 5vh;
   cursor: pointer;
 }
 .channel-element {
@@ -121,4 +132,9 @@ body {
 #status-row {
   margin-bottom: 1vh;
   visibility: hidden;
+}
+#connect-image {
+  height: 5vh;
+  margin-top: 1vh;
+  cursor: pointer;
 }
