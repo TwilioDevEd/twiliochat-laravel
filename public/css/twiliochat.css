@@ -17,7 +17,7 @@ body {
   background: -webkit-linear-gradient(-45deg,  #71271c 0%,#7c362e 47%,#a53829 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(135deg,  #71271c 0%,#7c362e 47%,#a53829 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#71271c', endColorstr='#a53829',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-  font-family: 'Helvetica Neue', Helvetica, sans-serif;
+  font-family: 'Currier New', Helvetica, sans-serif;
 }
 
 #chat-window {
@@ -74,9 +74,30 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
 }
-.message-item {
-  word-wrap: break-word;
+.message-info-row {
+  padding-top: 0.7vh;
+  padding-bottom: 0.5vh;
+}
+.message-body {
+  word-break: break-all;
+  text-align: justify;
+  text-justify: inter-word;
+  font-size: small;
   color: #644F52;
+}
+.message-username {
+  margin-left: 15px;
+  margin-bottom: 5px;
+  font-size: normal;
+  font-weight: bold;
+  color: #5C5153;
+}
+.message-date {
+  margin-right: 15px;
+  margin-bottom: 5px;
+  font-weight: lighter;
+  font-size: normal;
+  color: #BA9F9F;
 }
 .no-margin {
   margin: 0;
@@ -119,6 +140,10 @@ body {
 }
 .right-align {
   text-align: right;
+  padding: 0;
+}
+.left-align {
+  text-align: left;
   padding: 0;
 }
 #status-span {

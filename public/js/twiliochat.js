@@ -17,6 +17,7 @@ var usernameSpan;
 var statusRow;
 var connectPanel;
 var connectImage;
+var leaveSpan;
 
 $(document).ready(function() {
   messageList = $('#message-list');
@@ -27,6 +28,7 @@ $(document).ready(function() {
   statusRow = $('#status-row');
   connectPanel = $('#connect-panel');
   connectImage = $('#connect-image');
+  leaveSpan = $('#leave-span');
   scrollToMessageListBottom();
   usernameInput.focus();
   setupListeners();
@@ -37,6 +39,9 @@ setupListeners = function() {
   inputText.keypress(filterKeys);
   connectImage.click(function() {
     connectClientWithUsername(usernameInput.val());
+  });
+  leaveSpan.click(function() {
+    disconnectClient();
   });
 }
 
@@ -54,6 +59,7 @@ filterKeys = function(event) {
 }
 
 connectClientWithUsername = function(usernameText) {
+  usernameInput.val('');
   if (usernameText == '') {
     alert('Username cannot be empty');
     return;
@@ -69,10 +75,11 @@ connectClientWithUsername = function(usernameText) {
 
 addMessageToList = function(message) {
   var rowDiv = $('<div>').addClass('row no-margin');
-  var colDiv = $('<div>').addClass('col-md-12 message-item');
-  var messageP = $('<p>').text(message);
-  colDiv.append(messageP);
-  rowDiv.append(colDiv);
+  rowDiv.loadTemplate($("#message-template"), {
+    username: message.author,
+    date: message.timestamp,
+    body: message.body
+  });
 
   messageList.append(rowDiv);
   scrollToMessageListBottom();
@@ -150,16 +157,30 @@ selectChannel = function(event) {
   setupChannel(selectedChannel);
 };
 
+leaveCurrentChannel = function() {
+  if (currentChannel) {
+    currentChannel.leave().then(function(leftChannel) {
+      console.log('left ' + channel.friendlyName);
+      leftChannel.removeListener('messageAdded', onMessageAdded);
+    });
+  }
+}
+
+disconnectClient = function() {
+  leaveCurrentChannel();
+  channelList.text('');
+  channels = undefined;
+  statusRow.css('visibility', 'hidden');
+  messageList.css('height', '80%');
+  connectPanel.css('display', 'block');
+  inputText.removeClass('with-shadow');
+}
+
 setupChannel = function(channel) {
   // Join the channel
   channel.join().then(function(joinedChannel) {
     console.log('Joined channel ' + joinedChannel.friendlyName);
-    if (currentChannel) {
-      currentChannel.leave().then(function(leftChannel) {
-        console.log('left ' + channel.friendlyName);
-        leftChannel.removeListener('messageAdded', onMessageAdded);
-      });
-    }
+    leaveCurrentChannel();
     updateChannelUI(channel);
     currentChannel = channel;
     channel.on('messageAdded', onMessageAdded);
@@ -169,7 +190,7 @@ setupChannel = function(channel) {
 };
 
 onMessageAdded = function(message) {
-  addMessageToList(message.body);
+  addMessageToList(message);
 }
 
 sortChannelsByName = function(channels) {

@@ -44,4 +44,16 @@ Twilio Chat
     </div>
   </div>
 </div>
+
+<script type="text/html" id="message-template">
+  <div class="row no-margin">
+    <div class="row no-margin message-info-row" style="">
+      <div class="col-md-8 left-align"><p data-content="username" class="message-username"></p></div>
+      <div class="col-md-4 right-align"><span data-content="date" class="message-date"></span></div>
+    </div>
+    <div class="row no-margin message-content-row">
+      <div style="" class="col-md-12"><p data-content="body" class="message-body"></p></div>
+    </div>
+  </div>
+</script>
 @endsection
