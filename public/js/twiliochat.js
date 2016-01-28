@@ -77,7 +77,7 @@ addMessageToList = function(message) {
   var rowDiv = $('<div>').addClass('row no-margin');
   rowDiv.loadTemplate($("#message-template"), {
     username: message.author,
-    date: message.timestamp,
+    date: moment(message.timestamp).format(),
     body: message.body
   });
 

@@ -1,0 +1,3 @@
+getTodayDate = function(date) {
+  
+}
