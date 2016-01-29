@@ -80,6 +80,9 @@ addMessageToList = function(message) {
     date: getTodayDate(message.timestamp),
     body: message.body
   });
+  if (message.author == username) {
+    rowDiv.addClass('own-message');
+  }
 
   messageList.append(rowDiv);
   scrollToMessageListBottom();

@@ -74,6 +74,9 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+.own-message {
+  background-color: #DDD3D2;
+}
 .message-info-row {
   padding-top: 0.7vh;
   padding-bottom: 0.5vh;
