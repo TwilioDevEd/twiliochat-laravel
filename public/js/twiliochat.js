@@ -22,6 +22,7 @@ var addChannelImage;
 var leaveSpan;
 var newChannelInputRow;
 var newChannelInput;
+var isLoadingChannels;
 
 $(document).ready(function() {
   messageList = $('#message-list');
@@ -131,6 +132,11 @@ loadChannelList = function(handler) {
     console.log('Client is not initialized');
     return;
   }
+
+  if (isLoadingChannels) {
+    return;
+  }
+  isLoadingChannels = true;
   messagingClient.getChannels().then(function(channels) {
     channelArray = $.map(channels, function(value, index) {
       return value;
@@ -161,6 +167,7 @@ loadChannelList = function(handler) {
     if (handler) {
       handler();
     }
+    isLoadingChannels = false;
   });
 };
 
@@ -263,7 +270,9 @@ connectMessagingClient = function(tokenResponse) {
   // Initialize the IP messaging client
   accessManager = new Twilio.AccessManager(tokenResponse.token);
   messagingClient = new Twilio.IPMessaging.Client(accessManager);
-  messagingClient.on('channelAdded', loadChannelList);
+  messagingClient.on('channelAdded', function() {
+    loadChannelList();
+  });
   loadChannelList(joinGeneralChannel);
 };
 
