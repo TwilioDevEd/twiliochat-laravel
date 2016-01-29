@@ -1,5 +1,6 @@
 var GENERAL_CHANNEL_UNIQUE_NAME = 'general';
 var GENERAL_CHANNEL_NAME = 'General Channel';
+var MESSAGES_HISTORY_LIMIT = 30;
 var accessManager;
 var messagingClient;
 var generalChannel;
@@ -195,9 +196,9 @@ setupChannel = function(channel) {
 };
 
 loadMessages = function() {
-    currentChannel.getMessages(30).then(function (messages) {
-        messages.forEach(addMessageToList);
-    });
+  currentChannel.getMessages(MESSAGES_HISTORY_LIMIT).then(function (messages) {
+    messages.forEach(addMessageToList);
+  });
 }
 
 onMessageAdded = function(message) {

@@ -22,7 +22,7 @@ Twilio Chat
   <div id="container" class="row">
     <div id="channel-panel" class="col-md-offset-2 col-md-2">
       <div id="channel-list" class="row"></div>
-      <div class="row"><p id="new-channel-input" class="channel-element" contenteditable="true"></p></div>
+      <div class="row"><textarea id="new-channel-input" class="channel-element" contenteditable="true"></textarea></div>
       <div class="row"><img id="add-channel-image" src="{{ asset('img/add-channel-image.png') }}"/></div>
     </div>
     <div id="chat-window" class="col-md-4 with-shadow">
