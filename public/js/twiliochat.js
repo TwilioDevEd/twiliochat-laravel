@@ -187,11 +187,18 @@ setupChannel = function(channel) {
     leaveCurrentChannel();
     updateChannelUI(channel);
     currentChannel = channel;
+    loadMessages();
     channel.on('messageAdded', onMessageAdded);
     inputText.prop('disabled', false).focus();
     messageList.text('');
   });
 };
+
+loadMessages = function() {
+    currentChannel.getMessages(30).then(function (messages) {
+        messages.forEach(addMessageToList);
+    });
+}
 
 onMessageAdded = function(message) {
   addMessageToList(message);

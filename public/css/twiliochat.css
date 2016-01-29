@@ -74,6 +74,10 @@ body {
   overflow-y: scroll;
   overflow-x: hidden;
 }
+#new-channel-input {
+  background-color: #F8E6E4;
+  color: #B0ADAE;
+}
 .own-message {
   background-color: #DDD3D2;
 }
