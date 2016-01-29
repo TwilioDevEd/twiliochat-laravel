@@ -67,6 +67,11 @@ filterKeys = function(event) {
     }
     if (event.target.id == 'new-channel-input') {
       alert(newChannelInput.val());
+      messagingClient.createChannel({
+        friendlyName: newChannelInput.val()
+      }).then(function(channel) {
+        hideAddChannelInput();
+      });
       $(this).val('');
       event.preventDefault();
     }
@@ -258,8 +263,11 @@ connectMessagingClient = function(tokenResponse) {
   // Initialize the IP messaging client
   accessManager = new Twilio.AccessManager(tokenResponse.token);
   messagingClient = new Twilio.IPMessaging.Client(accessManager);
+  messagingClient.on('channelAdded', loadChannelList);
   loadChannelList(joinGeneralChannel);
 };
+
+
 
 joinGeneralChannel = function() {
   // Get the general chat channel, which is where all the messages are
