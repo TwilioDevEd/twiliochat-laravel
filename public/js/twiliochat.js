@@ -270,9 +270,7 @@ connectMessagingClient = function(tokenResponse) {
   // Initialize the IP messaging client
   accessManager = new Twilio.AccessManager(tokenResponse.token);
   messagingClient = new Twilio.IPMessaging.Client(accessManager);
-  messagingClient.on('channelAdded', function() {
-    loadChannelList();
-  });
+  messagingClient.on('channelAdded', loadChannelList);
   loadChannelList(joinGeneralChannel);
 };
 
