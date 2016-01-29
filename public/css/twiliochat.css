@@ -77,10 +77,11 @@ body {
 #new-channel-input {
   background-color: #F8E6E4;
   color: #B0ADAE;
-  height: 100%;
-  width: 100%;
   border: 0;
   resize: none;
+}
+#new-channel-input-row {
+  display: none;
 }
 .own-message {
   background-color: #DDD3D2;

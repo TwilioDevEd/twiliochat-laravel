@@ -22,8 +22,12 @@ Twilio Chat
   <div id="container" class="row">
     <div id="channel-panel" class="col-md-offset-2 col-md-2">
       <div id="channel-list" class="row"></div>
-      <div class="row"><textarea id="new-channel-input" class="channel-element" contenteditable="true"></textarea></div>
-      <div class="row"><img id="add-channel-image" src="{{ asset('img/add-channel-image.png') }}"/></div>
+      <div id="new-channel-input-row" class="row">
+        <textarea placeholder="Type channel name" id="new-channel-input" rows="1" maxlength="20" class="channel-element"></textarea>
+      </div>
+      <div class="row">
+        <img id="add-channel-image" src="{{ asset('img/add-channel-image.png') }}"/>
+      </div>
     </div>
     <div id="chat-window" class="col-md-4 with-shadow">
       <div id="message-list" class="row"></div>
@@ -33,7 +37,8 @@ Twilio Chat
       <div id="connect-panel" class="row with-shadow">
         <div class="row">
           <div class="col-md-12">
-            <label for="username-input">Username: </label><input id="username-input" type="text" placeholder="username"/>
+            <label for="username-input">Username: </label>
+            <input id="username-input" type="text" placeholder="username"/>
           </div>
         </div>
         <div class="row">

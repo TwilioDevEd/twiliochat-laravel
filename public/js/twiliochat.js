@@ -18,7 +18,10 @@ var usernameSpan;
 var statusRow;
 var connectPanel;
 var connectImage;
+var addChannelImage;
 var leaveSpan;
+var newChannelInputRow;
+var newChannelInput;
 
 $(document).ready(function() {
   messageList = $('#message-list');
@@ -30,7 +33,9 @@ $(document).ready(function() {
   connectPanel = $('#connect-panel');
   connectImage = $('#connect-image');
   leaveSpan = $('#leave-span');
-  scrollToMessageListBottom();
+  addChannelImage = $('#add-channel-image');
+  newChannelInputRow = $('#new-channel-input-row');
+  newChannelInput = $('#new-channel-input');
   usernameInput.focus();
   setupListeners();
 });
@@ -38,8 +43,12 @@ $(document).ready(function() {
 setupListeners = function() {
   usernameInput.keypress(filterKeys);
   inputText.keypress(filterKeys);
+  newChannelInput.keypress(filterKeys);
   connectImage.click(function() {
     connectClientWithUsername(usernameInput.val());
+  });
+  addChannelImage.click(function() {
+    showAddChannelInput();
   });
   leaveSpan.click(function() {
     disconnectClient();
@@ -56,7 +65,26 @@ filterKeys = function(event) {
       $(this).val('');
       event.preventDefault();
     }
+    if (event.target.id == 'new-channel-input') {
+      alert(newChannelInput.val());
+      $(this).val('');
+      event.preventDefault();
+    }
   }
+}
+
+showAddChannelInput = function() {
+  if (messagingClient) {
+    newChannelInputRow.css('display', 'block');
+    channelList.css('max-height', '69vh');
+    newChannelInput.focus();
+  }
+}
+
+hideAddChannelInput = function() {
+  newChannelInputRow.css('display', 'none');
+  channelList.css('max-height', '75vh');
+  newChannelInput.val('');
 }
 
 connectClientWithUsername = function(usernameText) {
