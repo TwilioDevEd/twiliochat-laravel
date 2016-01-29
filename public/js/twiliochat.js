@@ -77,7 +77,7 @@ addMessageToList = function(message) {
   var rowDiv = $('<div>').addClass('row no-margin');
   rowDiv.loadTemplate($("#message-template"), {
     username: message.author,
-    date: moment(message.timestamp).format(),
+    date: getTodayDate(message.timestamp),
     body: message.body
   });
 
@@ -160,7 +160,7 @@ selectChannel = function(event) {
 leaveCurrentChannel = function() {
   if (currentChannel) {
     currentChannel.leave().then(function(leftChannel) {
-      console.log('left ' + channel.friendlyName);
+      console.log('left ' + leftChannel.friendlyName);
       leftChannel.removeListener('messageAdded', onMessageAdded);
     });
   }
@@ -169,6 +169,7 @@ leaveCurrentChannel = function() {
 disconnectClient = function() {
   leaveCurrentChannel();
   channelList.text('');
+  messageList.text('');
   channels = undefined;
   statusRow.css('visibility', 'hidden');
   messageList.css('height', '80%');
