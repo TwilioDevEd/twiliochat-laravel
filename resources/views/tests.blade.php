@@ -54,6 +54,17 @@
       </div>
     </div>
   </div>
+  <script type="text/html" id="message-template">
+    <div class="row no-margin">
+      <div class="row no-margin message-info-row" style="">
+        <div class="col-md-8 left-align"><p data-content="username" class="message-username"></p></div>
+        <div class="col-md-4 right-align"><span data-content="date" class="message-date"></span></div>
+      </div>
+      <div class="row no-margin message-content-row">
+        <div style="" class="col-md-12"><p data-content="body" class="message-body"></p></div>
+      </div>
+    </div>
+  </script>
   <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
   <script src="//code.jquery.com/qunit/qunit-1.20.0.js"></script>
   <script src="{{ asset('js/vendor/jquery.loadTemplate-1.4.4.min.js') }}"></script>
