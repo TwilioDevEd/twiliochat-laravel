@@ -75,9 +75,7 @@ handleNewChannelInputKeypress = function(event) {
     alert(newChannelInput.val());
     messagingClient.createChannel({
       friendlyName: newChannelInput.val()
-    }).then(function(channel) {
-      hideAddChannelInput();
-    });
+    }).then(hideAddChannelInput);
     $(this).val('');
     event.preventDefault();
   }
@@ -140,7 +138,7 @@ loadChannelList = function(handler) {
   if (isLoadingChannels) {
     return;
   }
-  isLoadingChannels = true;
+
   messagingClient.getChannels().then(function(channels) {
     channelArray = $.map(channels, function(value, index) {
       return value;
@@ -171,7 +169,7 @@ loadChannelList = function(handler) {
     if (handler) {
       handler();
     }
-    isLoadingChannels = false;
+
   });
 };
 
@@ -274,7 +272,7 @@ connectMessagingClient = function(tokenResponse) {
   // Initialize the IP messaging client
   accessManager = new Twilio.AccessManager(tokenResponse.token);
   messagingClient = new Twilio.IPMessaging.Client(accessManager);
-  messagingClient.on('channelAdded', loadChannelList);
+  messagingClient.on('channelAdded', $.throttle(loadChannelList));
   loadChannelList(joinGeneralChannel);
 };
 
