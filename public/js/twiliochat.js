@@ -42,9 +42,9 @@ $(document).ready(function() {
 });
 
 setupListeners = function() {
-  usernameInput.keypress(filterKeys);
-  inputText.keypress(filterKeys);
-  newChannelInput.keypress(filterKeys);
+  usernameInput.keypress(handleUsernameInputKeypress);
+  inputText.keypress(handleInputTextKeypress);
+  newChannelInput.keypress(handleNewChannelInputKeypress);
   connectImage.click(function() {
     connectClientWithUsername(usernameInput.val());
   });
@@ -56,26 +56,30 @@ setupListeners = function() {
   });
 }
 
-filterKeys = function(event) {
-  if(event.keyCode == 13) {
-    if (event.target.id == 'username-input') {
-      connectClientWithUsername(usernameInput.val());
-    }
-    if (event.target.id == 'input-text') {
-      currentChannel.sendMessage($(this).val());
-      $(this).val('');
-      event.preventDefault();
-    }
-    if (event.target.id == 'new-channel-input') {
-      alert(newChannelInput.val());
-      messagingClient.createChannel({
-        friendlyName: newChannelInput.val()
-      }).then(function(channel) {
-        hideAddChannelInput();
-      });
-      $(this).val('');
-      event.preventDefault();
-    }
+handleUsernameInputKeypress = function(event) {
+  if (event.keyCode == 13){
+   connectClientWithUsername(usernameInput.val());
+  }
+}
+
+handleInputTextKeypress = function(event) {
+  if (event.keyCode == 13) {
+    currentChannel.sendMessage($(this).val());
+    $(this).val('');
+    event.preventDefault();
+  }
+}
+
+handleNewChannelInputKeypress = function(event) {
+  if (event.keyCode == 13) {
+    alert(newChannelInput.val());
+    messagingClient.createChannel({
+      friendlyName: newChannelInput.val()
+    }).then(function(channel) {
+      hideAddChannelInput();
+    });
+    $(this).val('');
+    event.preventDefault();
   }
 }
 
