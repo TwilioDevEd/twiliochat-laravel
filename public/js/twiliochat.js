@@ -22,7 +22,6 @@ var addChannelImage;
 var leaveSpan;
 var newChannelInputRow;
 var newChannelInput;
-var isLoadingChannels;
 
 $(document).ready(function() {
   messageList = $('#message-list');
@@ -45,20 +44,14 @@ setupListeners = function() {
   usernameInput.keypress(handleUsernameInputKeypress);
   inputText.keypress(handleInputTextKeypress);
   newChannelInput.keypress(handleNewChannelInputKeypress);
-  connectImage.click(function() {
-    connectClientWithUsername(usernameInput.val());
-  });
-  addChannelImage.click(function() {
-    showAddChannelInput();
-  });
-  leaveSpan.click(function() {
-    disconnectClient();
-  });
+  connectImage.click(connectClientWithUsername);
+  addChannelImage.click(showAddChannelInput);
+  leaveSpan.click(disconnectClient);
 }
 
 handleUsernameInputKeypress = function(event) {
   if (event.keyCode == 13){
-   connectClientWithUsername(usernameInput.val());
+   connectClientWithUsername();
   }
 }
 
@@ -95,7 +88,8 @@ hideAddChannelInput = function() {
   newChannelInput.val('');
 }
 
-connectClientWithUsername = function(usernameText) {
+connectClientWithUsername = function() {
+  var usernameText = usernameInput.val();
   usernameInput.val('');
   if (usernameText == '') {
     alert('Username cannot be empty');
@@ -129,13 +123,31 @@ scrollToMessageListBottom = function() {
   messageList.scrollTop(messageList[0].scrollHeight);
 };
 
-loadChannelList = function(handler) {
-  if (messagingClient === undefined) {
-    console.log('Client is not initialized');
-    return;
+addChannel = function(channel) {
+  if (channel.uniqueName == GENERAL_CHANNEL_UNIQUE_NAME) {
+    generalChannel = channel;
+  }
+  var rowDiv = $('<div>').addClass('row channel-row');
+  rowDiv.click(selectChannel);
+  var colDiv = $('<div>').addClass('col-md-12');
+  var channelP = $('<p>').addClass('channel-element').text(channel.friendlyName);
+  channelP.data('sid', channel.sid);
+  if (currentChannel && channel.sid == currentChannel.sid) {
+    currentChannelContainer = channelP;
+    channelP.addClass('selected-channel');
+  }
+  else {
+    channelP.addClass('unselected-channel')
   }
 
-  if (isLoadingChannels) {
+  colDiv.append(channelP);
+  rowDiv.append(colDiv);
+  channelList.append(rowDiv);
+};
+
+loadChannelList = function() {
+  if (messagingClient === undefined) {
+    console.log('Client is not initialized');
     return;
   }
 
@@ -145,31 +157,7 @@ loadChannelList = function(handler) {
     });
     channelArray = sortChannelsByName(channelArray);
     channelList.text('');
-    $.each(channelArray, function(index, channel) {
-      if (channel.uniqueName == GENERAL_CHANNEL_UNIQUE_NAME) {
-        generalChannel = channel;
-      }
-      var rowDiv = $('<div>').addClass('row channel-row');
-      rowDiv.click(selectChannel);
-      var colDiv = $('<div>').addClass('col-md-12');
-      var channelP = $('<p>').addClass('channel-element').text(channel.friendlyName);
-      channelP.data('sid', channel.sid);
-      if (currentChannel && channel.sid == currentChannel.sid) {
-        currentChannelContainer = channelP;
-        channelP.addClass('selected-channel');
-      }
-      else {
-        channelP.addClass('unselected-channel')
-      }
-
-      colDiv.append(channelP);
-      rowDiv.append(colDiv);
-      channelList.append(rowDiv);
-    });
-    if (handler) {
-      handler();
-    }
-
+    channelArray.forEach(addChannel);
   });
 };
 
@@ -207,7 +195,7 @@ leaveCurrentChannel = function() {
   if (currentChannel) {
     currentChannel.leave().then(function(leftChannel) {
       console.log('left ' + leftChannel.friendlyName);
-      leftChannel.removeListener('messageAdded', onMessageAdded);
+      leftChannel.removeListener('messageAdded', addMessageToList);
     });
   }
 }
@@ -231,7 +219,7 @@ setupChannel = function(channel) {
     updateChannelUI(channel);
     currentChannel = channel;
     loadMessages();
-    channel.on('messageAdded', onMessageAdded);
+    channel.on('messageAdded', addMessageToList);
     inputText.prop('disabled', false).focus();
     messageList.text('');
   });
@@ -241,10 +229,6 @@ loadMessages = function() {
   currentChannel.getMessages(MESSAGES_HISTORY_LIMIT).then(function (messages) {
     messages.forEach(addMessageToList);
   });
-}
-
-onMessageAdded = function(message) {
-  addMessageToList(message);
 }
 
 sortChannelsByName = function(channels) {
