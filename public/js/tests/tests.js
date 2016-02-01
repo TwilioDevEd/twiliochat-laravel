@@ -1,8 +1,3 @@
-QUnit.assert.contains = function( needle, haystack, message ) {
- var actual = haystack.indexOf(needle) > -1;
- this.push(actual, actual, needle, message);
-};
-
 QUnit.test("should sort channels by name", function(assert) {
   var channels = [
     {friendlyName: "BBB"},
@@ -40,9 +35,9 @@ QUnit.test("should be able to add messages to chat", function(assert) {
     author: "me",
     timestamp: new Date()
   }
-
+  messageList = $("#message-list");
   username = "me";
   addMessageToList(message);
 
-  assert.ok($("#message-list").html().indexOf("just a test message") > -1, $("#message-list").html());
+  assert.ok(messageList.html().indexOf("just a test message") > -1, messageList.html());
 });
