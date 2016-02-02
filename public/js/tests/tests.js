@@ -29,6 +29,15 @@ QUnit.test("should sort channels when they have same name", function(assert) {
   assert.deepEqual(result, [{friendlyName: "BBA"}, {friendlyName: "BBA"}, {friendlyName: "BBB"}]);
 });
 
+QUnit.test("should be able to add a new channel", function(assert) {
+
+  var newChannel = {friendlyName: "new test channel"};
+
+  addChannel(newChannel);
+
+  assert.ok(channelList.html().indexOf('new test channel') > -1, channelList.html());
+});
+
 QUnit.test("should be able to add messages to chat", function(assert) {
   var message = {
     body: "just a test message",

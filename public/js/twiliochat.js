@@ -65,7 +65,6 @@ handleInputTextKeypress = function(event) {
 
 handleNewChannelInputKeypress = function(event) {
   if (event.keyCode == 13) {
-    alert(newChannelInput.val());
     messagingClient.createChannel({
       friendlyName: newChannelInput.val()
     }).then(hideAddChannelInput);
