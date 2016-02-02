@@ -122,14 +122,13 @@ body {
   cursor: pointer;
 }
 .channel-element {
-  width: 80%;
+  width: 100%;
   height: 6vh;
   margin: 0;
   padding-left: 20px;
   line-height: 6vh;
   overflow: hidden;
   font-size: large;
-  display: inline-flex;
 }
 .unselected-channel {
   color: #D47567;

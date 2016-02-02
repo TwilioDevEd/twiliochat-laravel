@@ -62,14 +62,4 @@ Twilio Chat
     </div>
   </div>
 </script>
-<script type="text/html" id="channel-template">
-  <div class="row channel-row">
-    <div class="col-md-12">
-      <p>
-        <span class="glyphicon glyphicon-remove"></span>
-        <p class"channel-element"></p>
-      </p>
-    </div>
-  </div>
-</script>
 @endsection
