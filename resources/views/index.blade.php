@@ -62,4 +62,9 @@ Twilio Chat
     </div>
   </div>
 </script>
+<script type="text/html" id="channel-template">
+  <div class="col-md-12">
+    <p class="channel-element" data-content="channelName"></p>
+  </div>
+</script>
 @endsection
