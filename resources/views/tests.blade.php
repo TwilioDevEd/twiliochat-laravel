@@ -69,6 +69,7 @@
   <script src="//code.jquery.com/qunit/qunit-1.20.0.js"></script>
   <script src="{{ asset('js/vendor/jquery.loadTemplate-1.4.4.min.js') }}"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
+  <script src="//media.twiliocdn.com/sdk/rtc/js/ip-messaging/v0.9/twilio-ip-messaging.min.js"></script>
   <script src="{{ asset('js/twiliochat.js') }}"></script>
   <script src="{{ asset('js/dateformatter.js') }}"></script>
   <script src="{{ asset('js/vendor/sinon-1.17.2.js') }}"></script>

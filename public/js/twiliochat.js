@@ -106,82 +106,23 @@ connectClientWithUsername = function() {
   inputText.addClass('with-shadow');
 }
 
-fetchAccessToken = function (username, handler) {
-  $.post('/token', {
-    identity: username,
-    deviceId: 'browser'
-  }, function(data) {
-    handler(data);
-  }, 'json');
-};
-
-connectMessagingClient = function(tokenResponse) {
-  // Initialize the IP messaging client
-  accessManager = new Twilio.AccessManager(tokenResponse.token);
-  messagingClient = new Twilio.IPMessaging.Client(accessManager);
-  loadChannelList(joinGeneralChannel);
-  messagingClient.on('channelAdded', $.throttle(loadChannelList));
-  messagingClient.on('channelRemoved', $.throttle(loadChannelList));
-};
-
-joinGeneralChannel = function() {
-  // Get the general chat channel, which is where all the messages are
-  // sent in this simple application
-  console.log('Attempting to join "general" chat channel...');
-  if (!generalChannel) {
-    // If it doesn't exist, let's create it
-    messagingClient.createChannel({
-      uniqueName: GENERAL_CHANNEL_UNIQUE_NAME,
-      friendlyName: GENERAL_CHANNEL_NAME
-    }).then(function(channel) {
-      console.log('Created general channel');
-      generalChannel = channel;
-      loadChannelList(joinGeneralChannel);
-    });
-  }
-  else {
-    console.log('Found general channel:');
-    setupChannel(generalChannel);
-  }
-};
-
-setupChannel = function(channel) {
-  // Join the channel
-  channel.join().then(function(joinedChannel) {
-    console.log('Joined channel ' + joinedChannel.friendlyName);
-    leaveCurrentChannel();
-    updateChannelUI(channel);
-    currentChannel = channel;
-    loadMessages();
-    channel.on('messageAdded', addMessageToList);
-    inputText.prop('disabled', false).focus();
-    messageList.text('');
+addMessageToList = function(message) {
+  var rowDiv = $('<div>').addClass('row no-margin');
+  rowDiv.loadTemplate($("#message-template"), {
+    username: message.author,
+    date: getTodayDate(message.timestamp),
+    body: message.body
   });
-};
-
-loadMessages = function() {
-  currentChannel.getMessages(MESSAGES_HISTORY_LIMIT).then(function (messages) {
-    messages.forEach(addMessageToList);
-  });
-}
-
-loadChannelList = function(handler) {
-  if (messagingClient === undefined) {
-    console.log('Client is not initialized');
-    return;
+  if (message.author == username) {
+    rowDiv.addClass('own-message');
   }
 
-  messagingClient.getChannels().then(function(channels) {
-    channelArray = $.map(channels, function(value, index) {
-      return value;
-    });
-    channelArray = sortChannelsByName(channelArray);
-    channelList.text('');
-    channelArray.forEach(addChannel);
-    if (typeof handler == "function") {
-      handler();
-    }
-  });
+  messageList.append(rowDiv);
+  scrollToMessageListBottom();
+};
+
+scrollToMessageListBottom = function() {
+  messageList.scrollTop(messageList[0].scrollHeight);
 };
 
 addChannel = function(channel) {
@@ -208,45 +149,6 @@ addChannel = function(channel) {
   channelList.append(rowDiv);
 };
 
-disconnectClient = function() {
-  leaveCurrentChannel();
-  channelList.text('');
-  messageList.text('');
-  channels = undefined;
-  statusRow.css('visibility', 'hidden');
-  messageList.css('height', '80%');
-  connectPanel.css('display', 'block');
-  inputText.removeClass('with-shadow');
-}
-
-leaveCurrentChannel = function() {
-  if (currentChannel) {
-    currentChannel.leave().then(function(leftChannel) {
-      console.log('left ' + leftChannel.friendlyName);
-      leftChannel.removeListener('messageAdded', addMessageToList);
-    });
-  }
-}
-
-addMessageToList = function(message) {
-  var rowDiv = $('<div>').addClass('row no-margin');
-  rowDiv.loadTemplate($("#message-template"), {
-    username: message.author,
-    date: getTodayDate(message.timestamp),
-    body: message.body
-  });
-  if (message.author == username) {
-    rowDiv.addClass('own-message');
-  }
-
-  messageList.append(rowDiv);
-  scrollToMessageListBottom();
-};
-
-scrollToMessageListBottom = function() {
-  messageList.scrollTop(messageList[0].scrollHeight);
-};
-
 deleteCurrentChannel = function() {
   if (!currentChannel) {
     return;
@@ -260,6 +162,25 @@ deleteCurrentChannel = function() {
     setupChannel(generalChannel);
   });
 }
+
+loadChannelList = function(handler) {
+  if (messagingClient === undefined) {
+    console.log('Client is not initialized');
+    return;
+  }
+
+  messagingClient.getChannels().then(function(channels) {
+    channelArray = $.map(channels, function(value, index) {
+      return value;
+    });
+    channelArray = sortChannelsByName(channelArray);
+    channelList.text('');
+    channelArray.forEach(addChannel);
+    if (typeof handler == "function") {
+      handler();
+    }
+  });
+};
 
 updateChannelUI = function(selectedChannel) {
   var channelElements = $('.channel-element');
@@ -291,6 +212,46 @@ selectChannel = function(event) {
   setupChannel(selectedChannel);
 };
 
+leaveCurrentChannel = function() {
+  if (currentChannel) {
+    currentChannel.leave().then(function(leftChannel) {
+      console.log('left ' + leftChannel.friendlyName);
+      leftChannel.removeListener('messageAdded', addMessageToList);
+    });
+  }
+}
+
+disconnectClient = function() {
+  leaveCurrentChannel();
+  channelList.text('');
+  messageList.text('');
+  channels = undefined;
+  statusRow.css('visibility', 'hidden');
+  messageList.css('height', '80%');
+  connectPanel.css('display', 'block');
+  inputText.removeClass('with-shadow');
+}
+
+setupChannel = function(channel) {
+  // Join the channel
+  channel.join().then(function(joinedChannel) {
+    console.log('Joined channel ' + joinedChannel.friendlyName);
+    leaveCurrentChannel();
+    updateChannelUI(channel);
+    currentChannel = channel;
+    loadMessages();
+    channel.on('messageAdded', addMessageToList);
+    inputText.prop('disabled', false).focus();
+    messageList.text('');
+  });
+};
+
+loadMessages = function() {
+  currentChannel.getMessages(MESSAGES_HISTORY_LIMIT).then(function (messages) {
+    messages.forEach(addMessageToList);
+  });
+}
+
 sortChannelsByName = function(channels) {
   return channels.sort(function(a, b) {
     if (a.friendlyName == GENERAL_CHANNEL_NAME) {
@@ -301,4 +262,54 @@ sortChannelsByName = function(channels) {
     }
     return a.friendlyName.localeCompare(b.friendlyName);
   });
+};
+
+fetchAccessToken = function (username, handler) {
+  $.post('/token', {
+    identity: username,
+    deviceId: 'browser'
+  }, function(data) {
+    handler(data);
+  }, 'json');
+};
+
+connectMessagingClient = function(tokenResponse) {
+  // Initialize the IP messaging client
+  accessManager = new Twilio.AccessManager(tokenResponse.token);
+  messagingClient = new Twilio.IPMessaging.Client(accessManager);
+  loadChannelList(joinGeneralChannel);
+  messagingClient.on('channelAdded', $.throttle(loadChannelList));
+  messagingClient.on('channelRemoved', $.throttle(loadChannelList));
+  messagingClient.on('tokenExpired', refreshToken);
+};
+
+refreshToken = function() {
+  fetchAccessToken(username, setNewToken);
+}
+
+setNewToken = function(tokenResponse) {
+   accessManager.updateToken(tokenResponse.token);
+}
+
+
+
+joinGeneralChannel = function() {
+  // Get the general chat channel, which is where all the messages are
+  // sent in this simple application
+  console.log('Attempting to join "general" chat channel...');
+  if (!generalChannel) {
+    // If it doesn't exist, let's create it
+    messagingClient.createChannel({
+      uniqueName: GENERAL_CHANNEL_UNIQUE_NAME,
+      friendlyName: GENERAL_CHANNEL_NAME
+    }).then(function(channel) {
+      console.log('Created general channel');
+      generalChannel = channel;
+      loadChannelList(joinGeneralChannel);
+    });
+  }
+  else {
+    console.log('Found general channel:');
+    setupChannel(generalChannel);
+  }
 };

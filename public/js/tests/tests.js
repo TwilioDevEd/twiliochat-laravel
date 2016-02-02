@@ -29,23 +29,23 @@ QUnit.test("should sort channels when they have same name", function(assert) {
   assert.deepEqual(result, [{friendlyName: "BBA"}, {friendlyName: "BBA"}, {friendlyName: "BBB"}]);
 });
 
-QUnit.test("should be able to add a new channel", function(assert) {
+// QUnit.test("should be able to add a new channel", function(assert) {
+//
+//   var newChannel = {friendlyName: "new test channel"};
+//
+//   addChannel(newChannel);
+//
+//   assert.ok(channelList.html().indexOf('new test channel') > -1, channelList.html());
+// });
 
-  var newChannel = {friendlyName: "new test channel"};
-
-  addChannel(newChannel);
-
-  assert.ok(channelList.html().indexOf('new test channel') > -1, channelList.html());
-});
-
-QUnit.test("should be able to delete a channel", function(assert){
-  var newChannel = {friendlyName: 'new test channel', sid: '1'};
-  addChannel(newChannel);
-
-  deleteChannel(newChannel);
-
-  assert.ok(channelList.html().indexOf('new test channel') == -1, channelList.html());
-});
+// QUnit.test("should be able to delete a channel", function(assert){
+//   var newChannel = {friendlyName: 'new test channel', sid: '1'};
+//   addChannel(newChannel);
+//
+//   deleteChannel(newChannel);
+//
+//   assert.ok(channelList.html().indexOf('new test channel') == -1, channelList.html());
+// });
 
 QUnit.test("should be able to add messages to chat", function(assert) {
   var message = {
@@ -58,4 +58,52 @@ QUnit.test("should be able to add messages to chat", function(assert) {
   addMessageToList(message);
 
   assert.ok(messageList.html().indexOf("just a test message") > -1, messageList.html());
+});
+
+QUnit.test("should create a general channel when there is not one", function(){
+ var messagingClientMock = { createChannel: function () {} };
+ var mock = sinon.mock(messagingClientMock);
+ messagingClient = messagingClientMock;
+ mock.expects("createChannel").once().returns({ then: function(){} });
+ generalChannel = undefined;
+ joinGeneralChannel();
+
+ mock.verify();
+ ok(true);
+});
+
+QUnit.test("should not create a new general channel if it already has one", function(){
+ var messagingClientMock = { createChannel: function () {} };
+ var mock = sinon.mock(messagingClientMock);
+ messagingClient = messagingClientMock;
+ mock.expects("createChannel").never().returns({then: function(){} });
+ generalChannel = {join: function(){ return {then: function() {}}}};
+ joinGeneralChannel();
+
+ mock.verify();
+ ok(true);
+});
+
+QUnit.test("should create a new channel when requested by the user", function(){
+  var messagingClientMock = { createChannel: function () {} };
+  var mock = sinon.mock(messagingClientMock);
+  messagingClient = messagingClientMock;
+  mock.expects("createChannel").once().returns({ then: function(){} });
+
+  handleNewChannelInputKeypress({keyCode: 13, preventDefault: function() {}});
+
+  mock.verify();
+  ok(true);
+});
+
+QUnit.test("should retrieve list of channels", function() {
+  var messagingClientMock = {getChannels: function(){} };
+  var mock = sinon.mock(messagingClientMock);
+  messagingClient = messagingClientMock;
+  mock.expects("getChannels").once().returns({then: function(){} });
+
+  loadChannelList();
+
+  mock.verify();
+  ok(true);
 });
