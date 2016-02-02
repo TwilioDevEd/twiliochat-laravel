@@ -40,10 +40,11 @@ QUnit.test("should be able to add a new channel", function(assert) {
 
 QUnit.test("should be able to delete a channel", function(assert){
   var newChannel = {friendlyName: 'new test channel', sid: '1'};
-  addChannel(newChannel);
+  var addedChannel = addChannel(newChannel);
 
-  deleteChannel(newChannel);
 
+  deleteChannel(addedChannel);
+  console.log(channelList.html().indexOf('new test channel'));
   assert.ok(channelList.html().indexOf('new test channel') == -1, channelList.html());
 });
 

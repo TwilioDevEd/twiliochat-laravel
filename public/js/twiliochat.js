@@ -129,24 +129,29 @@ addChannel = function(channel) {
   var rowDiv = $('<div>').addClass('row channel-row');
   rowDiv.click(selectChannel);
   var colDiv = $('<div>').addClass('col-md-12');
-  var channelP = $('<p>').addClass('channel-element').text(channel.friendlyName);
+  var deleteSpan = $('<span>').addClass('glyphicon glyphicon-remove');
+  var channelP = $('<p>');
+  var channelNameSpan = $('<p>').addClass('channel-element').text(channel.friendlyName);
   channelP.data('sid', channel.sid);
   if (currentChannel && channel.sid == currentChannel.sid) {
-    currentChannelContainer = channelP;
-    channelP.addClass('selected-channel');
+    currentChannelContainer = channelNameSpan;
+    channelNameSpan.addClass('selected-channel');
   }
   else {
-    channelP.addClass('unselected-channel')
+    channelNameSpan.addClass('unselected-channel')
   }
 
+  channelP.append(deleteSpan);
+  channelP.append(channelNameSpan);
   colDiv.append(channelP);
   rowDiv.append(colDiv);
   channelList.append(rowDiv);
+
+  return rowDiv;
 };
 
 deleteChannel = function(channel) {
-  var channelElem = $(this).data('sid', channel.sid);
-  channelElem.remove();
+  channel.remove();
 }
 
 loadChannelList = function(handler) {
