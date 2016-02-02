@@ -166,6 +166,10 @@ body {
   color: #370606;
   margin-left: 1vh;
 }
+#delete-channel-span {
+  cursor: pointer;
+  color: #370606;
+}
 #status-row {
   margin-bottom: 1vh;
   visibility: hidden;

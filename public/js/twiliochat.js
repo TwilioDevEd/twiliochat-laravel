@@ -1,6 +1,6 @@
 var GENERAL_CHANNEL_UNIQUE_NAME = 'general';
 var GENERAL_CHANNEL_NAME = 'General Channel';
-var MESSAGES_HISTORY_LIMIT = 30;
+var MESSAGES_HISTORY_LIMIT = 50;
 var accessManager;
 var messagingClient;
 var generalChannel;
@@ -22,6 +22,7 @@ var addChannelImage;
 var leaveSpan;
 var newChannelInputRow;
 var newChannelInput;
+var deleteChannelSpan;
 
 $(document).ready(function() {
   messageList = $('#message-list');
@@ -36,6 +37,7 @@ $(document).ready(function() {
   addChannelImage = $('#add-channel-image');
   newChannelInputRow = $('#new-channel-input-row');
   newChannelInput = $('#new-channel-input');
+  deleteChannelSpan = $('#delete-channel-span');
   usernameInput.focus();
   setupListeners();
 });
@@ -47,6 +49,7 @@ setupListeners = function() {
   connectImage.click(connectClientWithUsername);
   addChannelImage.click(showAddChannelInput);
   leaveSpan.click(disconnectClient);
+  deleteChannelSpan.click(deleteCurrentChannel);
 }
 
 handleUsernameInputKeypress = function(event) {
@@ -131,26 +134,33 @@ addChannel = function(channel) {
     channelName: channel.friendlyName
   });
 
-  // rowDiv.click(selectChannel);
-  // var colDiv = $('<div>').addClass('col-md-12');
-  // var channelP = $('<p>').addClass('channel-element').text(channel.friendlyName);
-  // channelP.data('sid', channel.sid);
-  // if (currentChannel && channel.sid == currentChannel.sid) {
-  //   currentChannelContainer = channelP;
-  //   channelP.addClass('selected-channel');
-  // }
-  // else {
-  //   channelP.addClass('unselected-channel')
-  // }
+  var channelP = rowDiv.children().children().first();
 
-  // colDiv.append(channelP);
-  // rowDiv.append(colDiv);
+  rowDiv.click(selectChannel);
+  channelP.data('sid', channel.sid);
+  if (currentChannel && channel.sid == currentChannel.sid) {
+    currentChannelContainer = channelP;
+    channelP.addClass('selected-channel');
+  }
+  else {
+    channelP.addClass('unselected-channel')
+  }
+
   channelList.append(rowDiv);
 };
 
-deleteChannel = function(channel) {
-  var channelElem = $(this).data('sid', channel.sid);
-  channelElem.remove();
+deleteCurrentChannel = function() {
+  if (!currentChannel) {
+    return;
+  }
+  if (currentChannel.sid == generalChannel.sid) {
+    alert('You cannot delete the general channel');
+    return;
+  }
+  currentChannel.delete().then(function(channel) {
+    console.log('channel: '+ channel.friendlyName + ' deleted');
+    setupChannel(generalChannel);
+  });
 }
 
 loadChannelList = function(handler) {
@@ -166,7 +176,7 @@ loadChannelList = function(handler) {
     channelArray = sortChannelsByName(channelArray);
     channelList.text('');
     channelArray.forEach(addChannel);
-    if (handler) {
+    if (typeof handler == "function") {
       handler();
     }
   });
@@ -269,6 +279,7 @@ connectMessagingClient = function(tokenResponse) {
   messagingClient = new Twilio.IPMessaging.Client(accessManager);
   loadChannelList(joinGeneralChannel);
   messagingClient.on('channelAdded', $.throttle(loadChannelList));
+  messagingClient.on('channelRemoved', $.throttle(loadChannelList));
 };
 
 

@@ -12,7 +12,10 @@ Twilio Chat
         <img id="logo-image" src="{{ asset('img/twilio-logo.png') }}"/>
       </div></div>
       <div id="status-row" class="row">
-        <div class="col-md-12 right-align">
+        <div class="col-md-5 left-align">
+          <span id="delete-channel-span"><b>Delete current channel</b></span>
+        </div>
+        <div class="col-md-7 right-align">
           <span id="status-span">Connected as <b><span id="username-span"></span></b></span>
           <span id="leave-span"><b>x Leave</b></span>
         </div>
