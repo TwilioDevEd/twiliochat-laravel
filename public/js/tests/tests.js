@@ -38,6 +38,15 @@ QUnit.test("should be able to add a new channel", function(assert) {
   assert.ok(channelList.html().indexOf('new test channel') > -1, channelList.html());
 });
 
+QUnit.test("should be able to delete a channel", function(assert){
+  var newChannel = {friendlyName: 'new test channel', sid: '1'};
+  addChannel(newChannel);
+
+  deleteChannel(newChannel);
+
+  assert.ok(channelList.html().indexOf('new test channel') == -1, channelList.html());
+});
+
 QUnit.test("should be able to add messages to chat", function(assert) {
   var message = {
     body: "just a test message",

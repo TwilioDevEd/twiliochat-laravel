@@ -144,6 +144,11 @@ addChannel = function(channel) {
   channelList.append(rowDiv);
 };
 
+deleteChannel = function(channel) {
+  var channelElem = $(this).data('sid', channel.sid);
+  channelElem.remove();
+}
+
 loadChannelList = function(handler) {
   if (messagingClient === undefined) {
     console.log('Client is not initialized');
