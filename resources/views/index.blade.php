@@ -81,6 +81,9 @@
         <p class="channel-element" data-content="channelName"></p>
       </div>
     </script>
+    <script type="text/html" id="member-notification-template">
+      <p class="member-status" data-content="status"></p>
+    </script>
     <!-- JavaScript -->
     <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
     <script src="{{ asset('js/jquery-throttle.min.js') }}"></script>

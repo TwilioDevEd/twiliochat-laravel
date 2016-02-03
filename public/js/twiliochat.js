@@ -25,7 +25,7 @@ var newChannelInput;
 var deleteChannelSpan;
 var typingRow;
 var typingPlaceholder;
-var throttledEvent;
+var throttledTypingEvent;
 
 $(document).ready(function() {
   messageList = $('#message-list');
@@ -70,10 +70,10 @@ handleInputTextKeypress = function(event) {
     $(this).val('');
   }
   else {
-    if (!throttledEvent) {
-      throttledEvent = $.throttle(sendTypingEvent, 1000);
+    if (!throttledTypingEvent) {
+      throttledTypingEvent = $.throttle(sendTypingEvent, 1000);
     }
-    throttledEvent();
+    throttledTypingEvent();
   }
 }
 
@@ -237,8 +237,29 @@ leaveCurrentChannel = function() {
     currentChannel.leave().then(function(leftChannel) {
       console.log('left ' + leftChannel.friendlyName);
       leftChannel.removeListener('messageAdded', addMessageToList);
+      leftChannel.removeListener('typingStarted', showTypingStarted);
+      leftChannel.removeListener('typingEnded', hideTypingStarted);
+      leftChannel.removeListener('memberJoined', notifyMemberJoined);
+      leftChannel.removeListener('memberLeft', notifyMemberLeft);
     });
   }
+}
+
+notifyMemberJoined = function(member) {
+  notify(member.identity + ' joined the channel')
+}
+
+notifyMemberLeft = function(member) {
+  notify(member.identity + ' left the channel');
+}
+
+notify = function(message) {
+  var row = $('<div>').addClass('col-md-12');
+  row.loadTemplate('#member-notification-template', {
+    status: message
+  });
+  messageList.append(row);
+  scrollToMessageListBottom();
 }
 
 disconnectClient = function() {
@@ -264,6 +285,8 @@ setupChannel = function(channel) {
     channel.on('messageAdded', addMessageToList);
     channel.on('typingStarted', showTypingStarted);
     channel.on('typingEnded', hideTypingStarted);
+    channel.on('memberJoined', notifyMemberJoined);
+    channel.on('memberLeft', notifyMemberLeft);
     inputText.prop('disabled', false).focus();
     messageList.text('');
   });
