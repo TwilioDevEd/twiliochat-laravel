@@ -25,7 +25,6 @@ var newChannelInput;
 var deleteChannelSpan;
 var typingRow;
 var typingPlaceholder;
-var throttledTypingEvent;
 
 $(document).ready(function() {
   messageList = $('#message-list');
@@ -70,16 +69,11 @@ handleInputTextKeypress = function(event) {
     $(this).val('');
   }
   else {
-    if (!throttledTypingEvent) {
-      throttledTypingEvent = $.throttle(sendTypingEvent, 1000);
-    }
-    throttledTypingEvent();
+    notifyTyping();
   }
 }
 
-sendTypingEvent = function() {
-  currentChannel.typing();
-}
+notifyTyping = $.throttle(currentChannel.typing, 1000);
 
 handleNewChannelInputKeypress = function(event) {
   if (event.keyCode == 13) {
