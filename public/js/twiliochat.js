@@ -73,7 +73,9 @@ handleInputTextKeypress = function(event) {
   }
 }
 
-notifyTyping = $.throttle(currentChannel.typing, 1000);
+notifyTyping = $.throttle(function() {
+  currentChannel.typing();
+}, 1000);
 
 handleNewChannelInputKeypress = function(event) {
   if (event.keyCode == 13) {
