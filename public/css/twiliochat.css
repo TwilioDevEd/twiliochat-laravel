@@ -34,6 +34,18 @@ body {
   background-color: #DED4D3;
   height: 5%;
 }
+#typing-row {
+  display: none;
+  height: 3%;
+  font-weight: lighter;
+  font-size: small;
+  color: #BBA0A1;
+  vertical-align: bottom;
+}
+#typing-placeholder {
+  height: 100%;
+  padding-left: 10px;
+}
 #message-list {
   height: 80%;
   overflow-y: scroll;
@@ -53,10 +65,14 @@ body {
   color: black;
 }
 #input-text {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 1%;
   height: 100%;
   width: 100%;
   background-color: #DED4D3;
-  color: black;
+  color: #644F52;
+  font-weight: 300;
   border: 0;
   resize: none;
 }
@@ -95,13 +111,14 @@ body {
   text-align: justify;
   text-justify: inter-word;
   font-size: small;
+  font-weight: 300;
   color: #644F52;
 }
 .message-username {
   margin-left: 15px;
   margin-bottom: 5px;
   font-size: normal;
-  font-weight: bold;
+  font-weight: 400;
   color: #5C5153;
 }
 .message-date {

@@ -23,6 +23,9 @@ var leaveSpan;
 var newChannelInputRow;
 var newChannelInput;
 var deleteChannelSpan;
+var typingRow;
+var typingPlaceholder;
+var throttledEvent;
 
 $(document).ready(function() {
   messageList = $('#message-list');
@@ -38,6 +41,8 @@ $(document).ready(function() {
   newChannelInputRow = $('#new-channel-input-row');
   newChannelInput = $('#new-channel-input');
   deleteChannelSpan = $('#delete-channel-span');
+  typingRow = $('#typing-row');
+  typingPlaceholder = $('#typing-placeholder');
   usernameInput.focus();
   setupListeners();
 });
@@ -61,9 +66,19 @@ handleUsernameInputKeypress = function(event) {
 handleInputTextKeypress = function(event) {
   if (event.keyCode == 13) {
     currentChannel.sendMessage($(this).val());
-    $(this).val('');
     event.preventDefault();
+    $(this).val('');
   }
+  else {
+    if (!throttledEvent) {
+      throttledEvent = $.throttle(sendTypingEvent, 1000);
+    }
+    throttledEvent();
+  }
+}
+
+sendTypingEvent = function() {
+  currentChannel.typing();
 }
 
 handleNewChannelInputKeypress = function(event) {
@@ -99,11 +114,16 @@ connectClientWithUsername = function() {
   }
   username = usernameText;
   fetchAccessToken(username, connectMessagingClient);
+  updateConnectedUI();
+}
+
+updateConnectedUI = function() {
   usernameSpan.text(username);
   statusRow.css('visibility', 'visible');
-  messageList.css('height', '95%');
+  messageList.css('height', '92%');
   connectPanel.css('display', 'none');
   inputText.addClass('with-shadow');
+  typingRow.css('display', 'block');
 }
 
 addMessageToList = function(message) {
@@ -230,6 +250,7 @@ disconnectClient = function() {
   messageList.css('height', '80%');
   connectPanel.css('display', 'block');
   inputText.removeClass('with-shadow');
+  typingRow.css('display', 'none');
 }
 
 setupChannel = function(channel) {
@@ -241,10 +262,20 @@ setupChannel = function(channel) {
     currentChannel = channel;
     loadMessages();
     channel.on('messageAdded', addMessageToList);
+    channel.on('typingStarted', showTypingStarted);
+    channel.on('typingEnded', hideTypingStarted);
     inputText.prop('disabled', false).focus();
     messageList.text('');
   });
 };
+
+showTypingStarted = function(member) {
+  typingPlaceholder.html(member.identity + " is typing...");
+}
+
+hideTypingStarted = function(member) {
+  typingPlaceholder.html('');
+}
 
 loadMessages = function() {
   currentChannel.getMessages(MESSAGES_HISTORY_LIMIT).then(function (messages) {

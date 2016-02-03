@@ -42,6 +42,9 @@
         </div>
         <div id="chat-window" class="col-md-4 with-shadow">
           <div id="message-list" class="row"></div>
+          <div id="typing-row" class="row">
+            <p id="typing-placeholder"></p>
+          </div>
           <div id="input-div" class="row">
             <textarea id="input-text" disabled="true" placeholder="   Your message"></textarea>
           </div>
@@ -61,6 +64,7 @@
         </div>
       </div>
     </div>
+    <!-- HTML Templates -->
     <script type="text/html" id="message-template">
       <div class="row no-margin">
         <div class="row no-margin message-info-row" style="">
