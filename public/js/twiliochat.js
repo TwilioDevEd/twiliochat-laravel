@@ -58,7 +58,7 @@ setupListeners = function() {
 
 handleUsernameInputKeypress = function(event) {
   if (event.keyCode == 13){
-   connectClientWithUsername();
+    connectClientWithUsername();
   }
 }
 
@@ -87,20 +87,6 @@ handleNewChannelInputKeypress = function(event) {
   }
 }
 
-showAddChannelInput = function() {
-  if (messagingClient) {
-    newChannelInputRow.css('display', 'block');
-    channelList.css('max-height', '69vh');
-    newChannelInput.focus();
-  }
-}
-
-hideAddChannelInput = function() {
-  newChannelInputRow.css('display', 'none');
-  channelList.css('max-height', '75vh');
-  newChannelInput.val('');
-}
-
 connectClientWithUsername = function() {
   var usernameText = usernameInput.val();
   usernameInput.val('');
@@ -110,7 +96,34 @@ connectClientWithUsername = function() {
   }
   username = usernameText;
   fetchAccessToken(username, connectMessagingClient);
+}
+
+fetchAccessToken = function (username, handler) {
+  $.post('/token', {
+    identity: username,
+    deviceId: 'browser'
+  }, function(data) {
+    handler(data);
+  }, 'json');
+};
+
+connectMessagingClient = function(tokenResponse) {
+  // Initialize the IP messaging client
+  accessManager = new Twilio.AccessManager(tokenResponse.token);
+  messagingClient = new Twilio.IPMessaging.Client(accessManager);
   updateConnectedUI();
+  loadChannelList(joinGeneralChannel);
+  messagingClient.on('channelAdded', $.throttle(loadChannelList));
+  messagingClient.on('channelRemoved', $.throttle(loadChannelList));
+  messagingClient.on('tokenExpired', refreshToken);
+};
+
+refreshToken = function() {
+  fetchAccessToken(username, setNewToken);
+}
+
+setNewToken = function(tokenResponse) {
+  accessManager.updateToken(tokenResponse.token);
 }
 
 updateConnectedUI = function() {
@@ -120,6 +133,81 @@ updateConnectedUI = function() {
   connectPanel.css('display', 'none');
   inputText.addClass('with-shadow');
   typingRow.css('display', 'block');
+}
+
+loadChannelList = function(handler) {
+  if (messagingClient === undefined) {
+    console.log('Client is not initialized');
+    return;
+  }
+
+  messagingClient.getChannels().then(function(channels) {
+    channelArray = $.map(channels, function(value, index) {
+      return value;
+    });
+    channelArray = sortChannelsByName(channelArray);
+    channelList.text('');
+    channelArray.forEach(addChannel);
+    if (typeof handler == "function") {
+      handler();
+    }
+  });
+};
+
+joinGeneralChannel = function() {
+  console.log('Attempting to join "general" chat channel...');
+  if (!generalChannel) {
+    // If it doesn't exist, let's create it
+    messagingClient.createChannel({
+      uniqueName: GENERAL_CHANNEL_UNIQUE_NAME,
+      friendlyName: GENERAL_CHANNEL_NAME
+    }).then(function(channel) {
+      console.log('Created general channel');
+      generalChannel = channel;
+      loadChannelList(joinGeneralChannel);
+    });
+  }
+  else {
+    console.log('Found general channel:');
+    setupChannel(generalChannel);
+  }
+};
+
+setupChannel = function(channel) {
+  // Join the channel
+  channel.join().then(function(joinedChannel) {
+    console.log('Joined channel ' + joinedChannel.friendlyName);
+    leaveCurrentChannel();
+    updateChannelUI(channel);
+    currentChannel = channel;
+    loadMessages();
+    channel.on('messageAdded', addMessageToList);
+    channel.on('typingStarted', showTypingStarted);
+    channel.on('typingEnded', hideTypingStarted);
+    channel.on('memberJoined', notifyMemberJoined);
+    channel.on('memberLeft', notifyMemberLeft);
+    inputText.prop('disabled', false).focus();
+    messageList.text('');
+  });
+};
+
+loadMessages = function() {
+  currentChannel.getMessages(MESSAGES_HISTORY_LIMIT).then(function (messages) {
+    messages.forEach(addMessageToList);
+  });
+}
+
+leaveCurrentChannel = function() {
+  if (currentChannel) {
+    currentChannel.leave().then(function(leftChannel) {
+      console.log('left ' + leftChannel.friendlyName);
+      leftChannel.removeListener('messageAdded', addMessageToList);
+      leftChannel.removeListener('typingStarted', showTypingStarted);
+      leftChannel.removeListener('typingEnded', hideTypingStarted);
+      leftChannel.removeListener('memberJoined', notifyMemberJoined);
+      leftChannel.removeListener('memberLeft', notifyMemberLeft);
+    });
+  }
 }
 
 addMessageToList = function(message) {
@@ -137,9 +225,65 @@ addMessageToList = function(message) {
   scrollToMessageListBottom();
 };
 
+notifyMemberJoined = function(member) {
+  notify(member.identity + ' joined the channel')
+}
+
+notifyMemberLeft = function(member) {
+  notify(member.identity + ' left the channel');
+}
+
+notify = function(message) {
+  var row = $('<div>').addClass('col-md-12');
+  row.loadTemplate('#member-notification-template', {
+    status: message
+  });
+  messageList.append(row);
+  scrollToMessageListBottom();
+}
+
+showTypingStarted = function(member) {
+  typingPlaceholder.html(member.identity + " is typing...");
+}
+
+hideTypingStarted = function(member) {
+  typingPlaceholder.html('');
+}
+
 scrollToMessageListBottom = function() {
   messageList.scrollTop(messageList[0].scrollHeight);
 };
+
+updateChannelUI = function(selectedChannel) {
+  var channelElements = $('.channel-element');
+  channelElements = $.map(channelElements, function(value, index) {
+    return value;
+  });
+  var channelElement = channelElements.filter(function(element) {
+    return $(element).data().sid === selectedChannel.sid;
+  });
+  channelElement = $(channelElement);
+  if (currentChannelContainer == undefined && selectedChannel.uniqueName == GENERAL_CHANNEL_UNIQUE_NAME) {
+    currentChannelContainer = channelElement;
+  }
+  currentChannelContainer.removeClass('selected-channel').addClass('unselected-channel');
+  channelElement.removeClass('unselected-channel').addClass('selected-channel');
+  currentChannelContainer = channelElement;
+}
+
+showAddChannelInput = function() {
+  if (messagingClient) {
+    newChannelInputRow.css('display', 'block');
+    channelList.css('max-height', '69vh');
+    newChannelInput.focus();
+  }
+}
+
+hideAddChannelInput = function() {
+  newChannelInputRow.css('display', 'none');
+  channelList.css('max-height', '75vh');
+  newChannelInput.val('');
+}
 
 addChannel = function(channel) {
   if (channel.uniqueName == GENERAL_CHANNEL_UNIQUE_NAME) {
@@ -179,43 +323,6 @@ deleteCurrentChannel = function() {
   });
 }
 
-loadChannelList = function(handler) {
-  if (messagingClient === undefined) {
-    console.log('Client is not initialized');
-    return;
-  }
-
-  messagingClient.getChannels().then(function(channels) {
-    channelArray = $.map(channels, function(value, index) {
-      return value;
-    });
-    channelArray = sortChannelsByName(channelArray);
-    channelList.text('');
-    channelArray.forEach(addChannel);
-    if (typeof handler == "function") {
-      handler();
-    }
-  });
-};
-
-updateChannelUI = function(selectedChannel) {
-  var channelElements = $('.channel-element');
-  channelElements = $.map(channelElements, function(value, index) {
-    return value;
-  });
-  var channelElement = channelElements.filter(function(element) {
-    return $(element).data().sid === selectedChannel.sid;
-  });
-  channelElement = $(channelElement);
-  if (currentChannelContainer == undefined && selectedChannel.uniqueName == GENERAL_CHANNEL_UNIQUE_NAME) {
-    currentChannelContainer = channelElement;
-  }
-  currentChannelContainer.removeClass('selected-channel').addClass('unselected-channel');
-  channelElement.removeClass('unselected-channel').addClass('selected-channel');
-  currentChannelContainer = channelElement;
-
-}
-
 selectChannel = function(event) {
   var target = $(event.target);
   var channelSid = target.data().sid;
@@ -227,36 +334,6 @@ selectChannel = function(event) {
   }
   setupChannel(selectedChannel);
 };
-
-leaveCurrentChannel = function() {
-  if (currentChannel) {
-    currentChannel.leave().then(function(leftChannel) {
-      console.log('left ' + leftChannel.friendlyName);
-      leftChannel.removeListener('messageAdded', addMessageToList);
-      leftChannel.removeListener('typingStarted', showTypingStarted);
-      leftChannel.removeListener('typingEnded', hideTypingStarted);
-      leftChannel.removeListener('memberJoined', notifyMemberJoined);
-      leftChannel.removeListener('memberLeft', notifyMemberLeft);
-    });
-  }
-}
-
-notifyMemberJoined = function(member) {
-  notify(member.identity + ' joined the channel')
-}
-
-notifyMemberLeft = function(member) {
-  notify(member.identity + ' left the channel');
-}
-
-notify = function(message) {
-  var row = $('<div>').addClass('col-md-12');
-  row.loadTemplate('#member-notification-template', {
-    status: message
-  });
-  messageList.append(row);
-  scrollToMessageListBottom();
-}
 
 disconnectClient = function() {
   leaveCurrentChannel();
@@ -270,38 +347,6 @@ disconnectClient = function() {
   typingRow.css('display', 'none');
 }
 
-setupChannel = function(channel) {
-  // Join the channel
-  channel.join().then(function(joinedChannel) {
-    console.log('Joined channel ' + joinedChannel.friendlyName);
-    leaveCurrentChannel();
-    updateChannelUI(channel);
-    currentChannel = channel;
-    loadMessages();
-    channel.on('messageAdded', addMessageToList);
-    channel.on('typingStarted', showTypingStarted);
-    channel.on('typingEnded', hideTypingStarted);
-    channel.on('memberJoined', notifyMemberJoined);
-    channel.on('memberLeft', notifyMemberLeft);
-    inputText.prop('disabled', false).focus();
-    messageList.text('');
-  });
-};
-
-showTypingStarted = function(member) {
-  typingPlaceholder.html(member.identity + " is typing...");
-}
-
-hideTypingStarted = function(member) {
-  typingPlaceholder.html('');
-}
-
-loadMessages = function() {
-  currentChannel.getMessages(MESSAGES_HISTORY_LIMIT).then(function (messages) {
-    messages.forEach(addMessageToList);
-  });
-}
-
 sortChannelsByName = function(channels) {
   return channels.sort(function(a, b) {
     if (a.friendlyName == GENERAL_CHANNEL_NAME) {
@@ -312,54 +357,4 @@ sortChannelsByName = function(channels) {
     }
     return a.friendlyName.localeCompare(b.friendlyName);
   });
-};
-
-fetchAccessToken = function (username, handler) {
-  $.post('/token', {
-    identity: username,
-    deviceId: 'browser'
-  }, function(data) {
-    handler(data);
-  }, 'json');
-};
-
-connectMessagingClient = function(tokenResponse) {
-  // Initialize the IP messaging client
-  accessManager = new Twilio.AccessManager(tokenResponse.token);
-  messagingClient = new Twilio.IPMessaging.Client(accessManager);
-  loadChannelList(joinGeneralChannel);
-  messagingClient.on('channelAdded', $.throttle(loadChannelList));
-  messagingClient.on('channelRemoved', $.throttle(loadChannelList));
-  messagingClient.on('tokenExpired', refreshToken);
-};
-
-refreshToken = function() {
-  fetchAccessToken(username, setNewToken);
-}
-
-setNewToken = function(tokenResponse) {
-   accessManager.updateToken(tokenResponse.token);
-}
-
-
-
-joinGeneralChannel = function() {
-  // Get the general chat channel, which is where all the messages are
-  // sent in this simple application
-  console.log('Attempting to join "general" chat channel...');
-  if (!generalChannel) {
-    // If it doesn't exist, let's create it
-    messagingClient.createChannel({
-      uniqueName: GENERAL_CHANNEL_UNIQUE_NAME,
-      friendlyName: GENERAL_CHANNEL_NAME
-    }).then(function(channel) {
-      console.log('Created general channel');
-      generalChannel = channel;
-      loadChannelList(joinGeneralChannel);
-    });
-  }
-  else {
-    console.log('Found general channel:');
-    setupChannel(generalChannel);
-  }
 };
