@@ -11,7 +11,7 @@ class TokenController extends Controller
     public function generate(Request $request, AccessToken $accessToken, IPMGrant $ipmGrant)
     {
         $appName = "TwilioChat";
-        $deviceId = $request->input("deviceId");
+        $deviceId = $request->input("device");
         $identity = $request->input("identity");
 
         $TWILIO_IPM_SERVICE_SID = config('services.twilio')['ipmServiceSid'];
