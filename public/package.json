@@ -1,0 +1,17 @@
+{
+  "name": "twiliochat",
+  "version": "1.0.0",
+  "description": "Twilio Chat",
+  "main": "tests.html",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node-qunit-phantomjs tests.html"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "node-qunit-phantomjs": "^1.3.1"
+  }
+}
