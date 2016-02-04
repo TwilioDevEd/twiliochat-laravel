@@ -1,4 +1,4 @@
-QUnit.test("should sort channels by name", function(assert) {
+test("should sort channels by name", function(assert) {
   var channels = [
     {friendlyName: "BBB"},
     {friendlyName: "BBA"}
@@ -9,7 +9,7 @@ QUnit.test("should sort channels by name", function(assert) {
   assert.deepEqual(result, [{friendlyName: "BBA"}, {friendlyName: "BBB"}]);
 });
 
-QUnit.test("should be able to sort an empty list of channels", function(assert) {
+test("should be able to sort an empty list of channels", function(assert) {
   var channels = [];
 
   var result = sortChannelsByName(channels)
@@ -17,7 +17,7 @@ QUnit.test("should be able to sort an empty list of channels", function(assert) 
   assert.deepEqual(result, []);
 });
 
-QUnit.test("should sort channels when they have same name", function(assert) {
+test("should sort channels when they have same name", function(assert) {
   var channels = [
     {friendlyName: "BBB"},
     {friendlyName: "BBA"},
@@ -29,25 +29,7 @@ QUnit.test("should sort channels when they have same name", function(assert) {
   assert.deepEqual(result, [{friendlyName: "BBA"}, {friendlyName: "BBA"}, {friendlyName: "BBB"}]);
 });
 
-// QUnit.test("should be able to add a new channel", function(assert) {
-//
-//   var newChannel = {friendlyName: "new test channel"};
-//
-//   addChannel(newChannel);
-//
-//   assert.ok(channelList.html().indexOf('new test channel') > -1, channelList.html());
-// });
-
-// QUnit.test("should be able to delete a channel", function(assert){
-//   var newChannel = {friendlyName: 'new test channel', sid: '1'};
-//   addChannel(newChannel);
-//
-//   deleteChannel(newChannel);
-//
-//   assert.ok(channelList.html().indexOf('new test channel') == -1, channelList.html());
-// });
-
-QUnit.test("should be able to add messages to chat", function(assert) {
+test("should be able to add messages to chat", function(assert) {
   var message = {
     body: "just a test message",
     author: "me",
@@ -60,7 +42,7 @@ QUnit.test("should be able to add messages to chat", function(assert) {
   assert.ok(messageList.html().indexOf("just a test message") > -1, messageList.html());
 });
 
-QUnit.test("should create a general channel when there is not one", function(){
+test("should create a general channel when there is not one", function(){
  var messagingClientMock = { createChannel: function () {} };
  var mock = sinon.mock(messagingClientMock);
  messagingClient = messagingClientMock;
@@ -72,7 +54,7 @@ QUnit.test("should create a general channel when there is not one", function(){
  ok(true);
 });
 
-QUnit.test("should not create a new general channel if it already has one", function(){
+test("should not create a new general channel if it already has one", function(){
  var messagingClientMock = { createChannel: function () {} };
  var mock = sinon.mock(messagingClientMock);
  messagingClient = messagingClientMock;
@@ -84,7 +66,7 @@ QUnit.test("should not create a new general channel if it already has one", func
  ok(true);
 });
 
-QUnit.test("should create a new channel when requested by the user", function(){
+test("should create a new channel when requested by the user", function(){
   var messagingClientMock = { createChannel: function () {} };
   var mock = sinon.mock(messagingClientMock);
   messagingClient = messagingClientMock;
@@ -96,7 +78,7 @@ QUnit.test("should create a new channel when requested by the user", function(){
   ok(true);
 });
 
-QUnit.test("should retrieve list of channels", function() {
+test("should retrieve list of channels", function() {
   var messagingClientMock = {getChannels: function(){} };
   var mock = sinon.mock(messagingClientMock);
   messagingClient = messagingClientMock;
