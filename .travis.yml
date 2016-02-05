@@ -4,9 +4,17 @@ php:
 - 5.5
 install:
 - composer install
+- cd public/ && npm install
 scripts:
   - mkdir -p build/logs
+  - phpunit
+  - cd public/ && npm test
+
 env:
   global:
   - APP_ENV=testing
-  - TOKEN_URL="your_token_url.com"
+  - APP_KEY=somesupersecretkeySomesupersecre
+  - TWILIO_ACCOUNT_SID=ACXXXXXXXXXXXXXXX
+  - TWILIO_API_KEY=SKXXXXXXXXXXXXXX
+  - TWILIO_API_SECRET=secretkey
+  - TWILIO_IPM_SERVICE_SID=ISXXXXXXXXXXXXXXX
