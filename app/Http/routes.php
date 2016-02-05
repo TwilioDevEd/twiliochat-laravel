@@ -22,12 +22,6 @@ Route::post(
     ['uses' => 'TokenController@generate', 'as' => 'token-generate']
 );
 
-Route::get(
-    '/tests', ['as' => 'test', function () {
-        return response()->view('tests');
-    }]
-);
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
