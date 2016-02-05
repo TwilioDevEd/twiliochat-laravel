@@ -35,7 +35,7 @@ class TokenControllerTest extends TestCase
         $response = $this->call(
             'POST',
              route('token-generate'),
-             ['deviceId' => 'browser',
+             ['device' => 'browser',
              'identity' => 'username',
              '_token' => csrf_token()]
         );

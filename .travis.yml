@@ -5,10 +5,10 @@ php:
 install:
 - composer install
 - cd public/ && npm install
+- cd ..
 scripts:
-  - mkdir -p build/logs
-  - phpunit
-  - cd public/ && npm test
+- mkdir -p build/logs
+- cd public/ && npm test && cd ..
 
 env:
   global:
