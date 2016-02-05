@@ -1,14 +1,14 @@
 language: php
 php:
-- 5.6
 - 5.5
 install:
 - composer install
 - cd public/ && npm install
 - cd ..
-scripts:
-- mkdir -p build/logs
-- cd public/ && npm test && cd ..
+script:
+  - mkdir -p build/logs
+  - cd public/ && npm test && cd ..
+  - phpunit
 
 env:
   global:
