@@ -37,22 +37,22 @@ var twiliochat = (function() {
     $typingRow = $('#typing-row');
     $typingPlaceholder = $('#typing-placeholder');
     $usernameInput.focus();
-    $usernameInput.keypress(handleUsernameInputKeypress);
-    $inputText.keypress(handleInputTextKeypress);
-    $newChannelInput.keypress(tc.handleNewChannelInputKeypress);
-    $connectImage.click(connectClientWithUsername);
-    $addChannelImage.click(showAddChannelInput);
-    $leaveSpan.click(disconnectClient);
-    $deleteChannelSpan.click(deleteCurrentChannel);
+    $usernameInput.on('keypress', handleUsernameInputKeypress);
+    $inputText.on('keypress', handleInputTextKeypress);
+    $newChannelInput.on('keypress', tc.handleNewChannelInputKeypress);
+    $connectImage.on('click', connectClientWithUsername);
+    $addChannelImage.on('click', showAddChannelInput);
+    $leaveSpan.on('click', disconnectClient);
+    $deleteChannelSpan.on('click', deleteCurrentChannel);
   });
 
-  handleUsernameInputKeypress = function(event) {
+  function handleUsernameInputKeypress(event) {
     if (event.keyCode === 13){
       connectClientWithUsername();
     }
   }
 
-  handleInputTextKeypress = function(event) {
+  function handleInputTextKeypress(event) {
     if (event.keyCode === 13) {
       tc.currentChannel.sendMessage($(this).val());
       event.preventDefault();
@@ -75,9 +75,9 @@ var twiliochat = (function() {
       $(this).val('');
       event.preventDefault();
     }
-  }
+  };
 
-  connectClientWithUsername = function() {
+  function connectClientWithUsername() {
     var usernameText = $usernameInput.val();
     $usernameInput.val('');
     if (usernameText == '') {
@@ -95,9 +95,9 @@ var twiliochat = (function() {
     }, function(data) {
       handler(data);
     }, 'json');
-  };
+  }
 
-  connectMessagingClient = function(tokenResponse) {
+  function connectMessagingClient(tokenResponse) {
     // Initialize the IP messaging client
     tc.accessManager = new Twilio.AccessManager(tokenResponse.token);
     tc.messagingClient = new Twilio.IPMessaging.Client(tc.accessManager);
@@ -106,23 +106,23 @@ var twiliochat = (function() {
     tc.messagingClient.on('channelAdded', $.throttle(tc.loadChannelList));
     tc.messagingClient.on('channelRemoved', $.throttle(tc.loadChannelList));
     tc.messagingClient.on('tokenExpired', refreshToken);
-  };
+  }
 
-  refreshToken = function() {
+  function refreshToken() {
     fetchAccessToken(username, setNewToken);
   }
 
-  setNewToken = function(tokenResponse) {
+  function setNewToken(tokenResponse) {
     tc.accessManager.updateToken(tokenResponse.token);
   }
 
   function updateConnectedUI() {
     $usernameSpan.text(tc.username);
-    $statusRow.css('visibility', 'visible');
-    tc.$messageList.css('height', '92%');
-    $connectPanel.css('display', 'none');
+    $statusRow.addClass('connected').removeClass('disconnected');
+    tc.$messageList.addClass('connected').removeClass('disconnected');
+    $connectPanel.addClass('connected').removeClass('disconnected');
     $inputText.addClass('with-shadow');
-    $typingRow.css('display', 'block');
+    $typingRow.addClass('connected').removeClass('disconnected');
   }
 
   tc.loadChannelList = function(handler) {
@@ -176,13 +176,13 @@ var twiliochat = (function() {
       $inputText.prop('disabled', false).focus();
       tc.$messageList.text('');
     });
-  };
+  }
 
   tc.loadMessages = function() {
     tc.currentChannel.getMessages(MESSAGES_HISTORY_LIMIT).then(function (messages) {
       messages.forEach(tc.addMessageToList);
     });
-  }
+  };
 
   function leaveCurrentChannel() {
     if (tc.currentChannel) {
@@ -212,15 +212,15 @@ var twiliochat = (function() {
     scrollToMessageListBottom();
   };
 
-  notifyMemberJoined = function(member) {
+  function notifyMemberJoined(member) {
     notify(member.identity + ' joined the channel')
   }
 
-  notifyMemberLeft = function(member) {
+  function notifyMemberLeft(member) {
     notify(member.identity + ' left the channel');
   }
 
-  notify = function(message) {
+  function notify(message) {
     var row = $('<div>').addClass('col-md-12');
     row.loadTemplate('#member-notification-template', {
       status: message
@@ -229,17 +229,17 @@ var twiliochat = (function() {
     scrollToMessageListBottom();
   }
 
-  showTypingStarted = function(member) {
+  function showTypingStarted(member) {
     $typingPlaceholder.html(member.identity + ' is typing...');
   }
 
-  hideTypingStarted = function(member) {
+  function hideTypingStarted(member) {
     $typingPlaceholder.html('');
   }
 
   function scrollToMessageListBottom() {
     tc.$messageList.scrollTop(tc.$messageList[0].scrollHeight);
-  };
+  }
 
   function updateChannelUI(selectedChannel) {
     var channelElements = $('.channel-element').toArray();
@@ -255,21 +255,21 @@ var twiliochat = (function() {
     tc.currentChannelContainer = channelElement;
   }
 
-  showAddChannelInput = function() {
+  function showAddChannelInput() {
     if (tc.messagingClient) {
-      $newChannelInputRow.css('display', 'block');
-      $channelList.css('max-height', '69vh');
+      $newChannelInputRow.addClass('showing').removeClass('not-showing');
+      $channelList.addClass('showing').removeClass('not-showing');
       $newChannelInput.focus();
     }
   }
 
-  hideAddChannelInput = function() {
-    $newChannelInputRow.css('display', 'none');
-    $channelList.css('max-height', '75vh');
+  function hideAddChannelInput() {
+    $newChannelInputRow.addClass('not-showing').removeClass('showing');
+    $channelList.addClass('not-showing').removeClass('showing');
     $newChannelInput.val('');
   }
 
-  addChannel = function(channel) {
+  function addChannel(channel) {
     if (channel.uniqueName === GENERAL_CHANNEL_UNIQUE_NAME) {
       tc.generalChannel = channel;
     }
@@ -280,7 +280,7 @@ var twiliochat = (function() {
 
     var channelP = rowDiv.children().children().first();
 
-    rowDiv.click(selectChannel);
+    rowDiv.on('click', selectChannel);
     channelP.data('sid', channel.sid);
     if (tc.currentChannel && channel.sid === tc.currentChannel.sid) {
       tc.currentChannelContainer = channelP;
@@ -291,9 +291,9 @@ var twiliochat = (function() {
     }
 
     $channelList.append(rowDiv);
-  };
+  }
 
-  deleteCurrentChannel = function() {
+  function deleteCurrentChannel() {
     if (!tc.currentChannel) {
       return;
     }
@@ -307,7 +307,7 @@ var twiliochat = (function() {
     });
   }
 
-  selectChannel = function(event) {
+  function selectChannel(event) {
     var target = $(event.target);
     var channelSid = target.data().sid;
     var selectedChannel = tc.channelArray.filter(function(channel) {
@@ -319,16 +319,16 @@ var twiliochat = (function() {
     setupChannel(selectedChannel);
   };
 
-  disconnectClient = function() {
+  function disconnectClient() {
     leaveCurrentChannel();
     $channelList.text('');
     tc.$messageList.text('');
     channels = undefined;
-    $statusRow.css('visibility', 'hidden');
-    tc.$messageList.css('height', '80%');
-    $connectPanel.css('display', 'block');
+    $statusRow.addClass('disconnected').removeClass('connected');
+    tc.$messageList.addClass('disconnected').removeClass('connected');
+    $connectPanel.addClass('disconnected').removeClass('connected');
     $inputText.removeClass('with-shadow');
-    $typingRow.css('display', 'none');
+    $typingRow.addClass('disconnected').removeClass('connected');
   }
 
   tc.sortChannelsByName = function(channels) {
