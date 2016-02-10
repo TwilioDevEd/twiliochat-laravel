@@ -57,13 +57,13 @@ setupListeners = function() {
 }
 
 handleUsernameInputKeypress = function(event) {
-  if (event.keyCode == 13){
+  if (event.keyCode === 13){
     connectClientWithUsername();
   }
 }
 
 handleInputTextKeypress = function(event) {
-  if (event.keyCode == 13) {
+  if (event.keyCode === 13) {
     currentChannel.sendMessage($(this).val());
     event.preventDefault();
     $(this).val('');
@@ -78,7 +78,7 @@ notifyTyping = $.throttle(function() {
 }, 1000);
 
 handleNewChannelInputKeypress = function(event) {
-  if (event.keyCode == 13) {
+  if (event.keyCode === 13) {
     messagingClient.createChannel({
       friendlyName: newChannelInput.val()
     }).then(hideAddChannelInput);
@@ -142,13 +142,10 @@ loadChannelList = function(handler) {
   }
 
   messagingClient.getChannels().then(function(channels) {
-    channelArray = $.map(channels, function(value, index) {
-      return value;
-    });
-    channelArray = sortChannelsByName(channelArray);
+    channelArray = sortChannelsByName(channels);
     channelList.text('');
     channelArray.forEach(addChannel);
-    if (typeof handler == "function") {
+    if (typeof handler === "function") {
       handler();
     }
   });
@@ -217,7 +214,7 @@ addMessageToList = function(message) {
     date: getTodayDate(message.timestamp),
     body: message.body
   });
-  if (message.author == username) {
+  if (message.author === username) {
     rowDiv.addClass('own-message');
   }
 
@@ -255,15 +252,12 @@ scrollToMessageListBottom = function() {
 };
 
 updateChannelUI = function(selectedChannel) {
-  var channelElements = $('.channel-element');
-  channelElements = $.map(channelElements, function(value, index) {
-    return value;
-  });
+  var channelElements = $('.channel-element').toArray();
   var channelElement = channelElements.filter(function(element) {
     return $(element).data().sid === selectedChannel.sid;
   });
   channelElement = $(channelElement);
-  if (currentChannelContainer == undefined && selectedChannel.uniqueName == GENERAL_CHANNEL_UNIQUE_NAME) {
+  if (currentChannelContainer === undefined && selectedChannel.uniqueName === GENERAL_CHANNEL_UNIQUE_NAME) {
     currentChannelContainer = channelElement;
   }
   currentChannelContainer.removeClass('selected-channel').addClass('unselected-channel');
@@ -286,7 +280,7 @@ hideAddChannelInput = function() {
 }
 
 addChannel = function(channel) {
-  if (channel.uniqueName == GENERAL_CHANNEL_UNIQUE_NAME) {
+  if (channel.uniqueName === GENERAL_CHANNEL_UNIQUE_NAME) {
     generalChannel = channel;
   }
   var rowDiv = $('<div>').addClass('row channel-row');
@@ -298,7 +292,7 @@ addChannel = function(channel) {
 
   rowDiv.click(selectChannel);
   channelP.data('sid', channel.sid);
-  if (currentChannel && channel.sid == currentChannel.sid) {
+  if (currentChannel && channel.sid === currentChannel.sid) {
     currentChannelContainer = channelP;
     channelP.addClass('selected-channel');
   }
@@ -313,7 +307,7 @@ deleteCurrentChannel = function() {
   if (!currentChannel) {
     return;
   }
-  if (currentChannel.sid == generalChannel.sid) {
+  if (currentChannel.sid === generalChannel.sid) {
     alert('You cannot delete the general channel');
     return;
   }
@@ -329,7 +323,7 @@ selectChannel = function(event) {
   var selectedChannel = channelArray.filter(function(channel) {
     return channel.sid === channelSid;
   })[0];
-  if (selectedChannel == currentChannel) {
+  if (selectedChannel === currentChannel) {
     return;
   }
   setupChannel(selectedChannel);
@@ -349,10 +343,10 @@ disconnectClient = function() {
 
 sortChannelsByName = function(channels) {
   return channels.sort(function(a, b) {
-    if (a.friendlyName == GENERAL_CHANNEL_NAME) {
+    if (a.friendlyName === GENERAL_CHANNEL_NAME) {
       return -1;
     }
-    if (b.friendlyName == GENERAL_CHANNEL_NAME) {
+    if (b.friendlyName === GENERAL_CHANNEL_NAME) {
       return 1;
     }
     return a.friendlyName.localeCompare(b.friendlyName);
