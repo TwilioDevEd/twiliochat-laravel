@@ -8,15 +8,10 @@ var twiliochat = (function() {
   var $channelList;
   var $inputText;
   var $usernameInput;
-  var $usernameSpan;
   var $statusRow;
   var $connectPanel;
-  var $connectImage;
-  var $addChannelImage;
-  var $leaveSpan;
   var $newChannelInputRow;
   var $newChannelInput;
-  var $deleteChannelSpan;
   var $typingRow;
   var $typingPlaceholder;
 
@@ -25,25 +20,20 @@ var twiliochat = (function() {
     $channelList = $('#channel-list');
     $inputText = $('#input-text');
     $usernameInput = $('#username-input');
-    $usernameSpan = $('#username-span');
     $statusRow = $('#status-row');
     $connectPanel = $('#connect-panel');
-    $connectImage = $('#connect-image');
-    $leaveSpan = $('#leave-span');
-    $addChannelImage = $('#add-channel-image');
     $newChannelInputRow = $('#new-channel-input-row');
     $newChannelInput = $('#new-channel-input');
-    $deleteChannelSpan = $('#delete-channel-span');
     $typingRow = $('#typing-row');
     $typingPlaceholder = $('#typing-placeholder');
     $usernameInput.focus();
     $usernameInput.on('keypress', handleUsernameInputKeypress);
     $inputText.on('keypress', handleInputTextKeypress);
     $newChannelInput.on('keypress', tc.handleNewChannelInputKeypress);
-    $connectImage.on('click', connectClientWithUsername);
-    $addChannelImage.on('click', showAddChannelInput);
-    $leaveSpan.on('click', disconnectClient);
-    $deleteChannelSpan.on('click', deleteCurrentChannel);
+    $('#connect-image').on('click', connectClientWithUsername);
+    $('#add-channel-image').on('click', showAddChannelInput);
+    $('#leave-span').on('click', disconnectClient);
+    $('#delete-channel-span').on('click', deleteCurrentChannel);
   });
 
   function handleUsernameInputKeypress(event) {
@@ -117,7 +107,7 @@ var twiliochat = (function() {
   }
 
   function updateConnectedUI() {
-    $usernameSpan.text(tc.username);
+    $('#username-span').text(tc.username);
     $statusRow.addClass('connected').removeClass('disconnected');
     tc.$messageList.addClass('connected').removeClass('disconnected');
     $connectPanel.addClass('connected').removeClass('disconnected');
@@ -230,11 +220,11 @@ var twiliochat = (function() {
   }
 
   function showTypingStarted(member) {
-    $typingPlaceholder.html(member.identity + ' is typing...');
+    $typingPlaceholder.text(member.identity + ' is typing...');
   }
 
   function hideTypingStarted(member) {
-    $typingPlaceholder.html('');
+    $typingPlaceholder.text('');
   }
 
   function scrollToMessageListBottom() {
