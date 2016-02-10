@@ -10,51 +10,47 @@ var channelArray;
 
 var username;
 
-var messageList;
-var channelList;
-var inputText;
-var usernameInput;
-var usernameSpan;
-var statusRow;
-var connectPanel;
-var connectImage;
-var addChannelImage;
-var leaveSpan;
-var newChannelInputRow;
-var newChannelInput;
-var deleteChannelSpan;
-var typingRow;
-var typingPlaceholder;
+var $messageList;
+var $channelList;
+var $inputText;
+var $usernameInput;
+var $usernameSpan;
+var $statusRow;
+var $connectPanel;
+var $connectImage;
+var $addChannelImage;
+var $leaveSpan;
+var $$newChannelInputRow;
+var $newChannelInput;
+var $deleteChannelSpan;
+var $typingRow;
+var $typingPlaceholder;
 
 $(document).ready(function() {
-  messageList = $('#message-list');
-  channelList = $('#channel-list');
-  inputText = $('#input-text');
-  usernameInput = $('#username-input');
-  usernameSpan = $('#username-span');
-  statusRow = $('#status-row');
-  connectPanel = $('#connect-panel');
-  connectImage = $('#connect-image');
-  leaveSpan = $('#leave-span');
-  addChannelImage = $('#add-channel-image');
-  newChannelInputRow = $('#new-channel-input-row');
-  newChannelInput = $('#new-channel-input');
-  deleteChannelSpan = $('#delete-channel-span');
-  typingRow = $('#typing-row');
-  typingPlaceholder = $('#typing-placeholder');
-  usernameInput.focus();
-  setupListeners();
+  $messageList = $('#message-list');
+  $channelList = $('#channel-list');
+  $inputText = $('#input-text');
+  $usernameInput = $('#username-input');
+  $usernameSpan = $('#username-span');
+  $statusRow = $('#status-row');
+  $connectPanel = $('#connect-panel');
+  $connectImage = $('#connect-image');
+  $leaveSpan = $('#leave-span');
+  $addChannelImage = $('#add-channel-image');
+  $$newChannelInputRow = $('#new-channel-input-row');
+  $newChannelInput = $('#new-channel-input');
+  $deleteChannelSpan = $('#delete-channel-span');
+  $typingRow = $('#typing-row');
+  $typingPlaceholder = $('#typing-placeholder');
+  $usernameInput.focus();
+  $usernameInput.keypress(handleUsernameInputKeypress);
+  $inputText.keypress(handleInputTextKeypress);
+  $newChannelInput.keypress(handleNewChannelInputKeypress);
+  $connectImage.click(connectClientWithUsername);
+  $addChannelImage.click(showAddChannelInput);
+  $leaveSpan.click(disconnectClient);
+  $deleteChannelSpan.click(deleteCurrentChannel);
 });
-
-setupListeners = function() {
-  usernameInput.keypress(handleUsernameInputKeypress);
-  inputText.keypress(handleInputTextKeypress);
-  newChannelInput.keypress(handleNewChannelInputKeypress);
-  connectImage.click(connectClientWithUsername);
-  addChannelImage.click(showAddChannelInput);
-  leaveSpan.click(disconnectClient);
-  deleteChannelSpan.click(deleteCurrentChannel);
-}
 
 handleUsernameInputKeypress = function(event) {
   if (event.keyCode === 13){
@@ -80,7 +76,7 @@ notifyTyping = $.throttle(function() {
 handleNewChannelInputKeypress = function(event) {
   if (event.keyCode === 13) {
     messagingClient.createChannel({
-      friendlyName: newChannelInput.val()
+      friendlyName: $newChannelInput.val()
     }).then(hideAddChannelInput);
     $(this).val('');
     event.preventDefault();
@@ -88,8 +84,8 @@ handleNewChannelInputKeypress = function(event) {
 }
 
 connectClientWithUsername = function() {
-  var usernameText = usernameInput.val();
-  usernameInput.val('');
+  var usernameText = $usernameInput.val();
+  $usernameInput.val('');
   if (usernameText == '') {
     alert('Username cannot be empty');
     return;
@@ -127,12 +123,12 @@ setNewToken = function(tokenResponse) {
 }
 
 updateConnectedUI = function() {
-  usernameSpan.text(username);
-  statusRow.css('visibility', 'visible');
-  messageList.css('height', '92%');
-  connectPanel.css('display', 'none');
-  inputText.addClass('with-shadow');
-  typingRow.css('display', 'block');
+  $usernameSpan.text(username);
+  $statusRow.css('visibility', 'visible');
+  $messageList.css('height', '92%');
+  $connectPanel.css('display', 'none');
+  $inputText.addClass('with-shadow');
+  $typingRow.css('display', 'block');
 }
 
 loadChannelList = function(handler) {
@@ -143,7 +139,7 @@ loadChannelList = function(handler) {
 
   messagingClient.getChannels().then(function(channels) {
     channelArray = sortChannelsByName(channels);
-    channelList.text('');
+    $channelList.text('');
     channelArray.forEach(addChannel);
     if (typeof handler === 'function') {
       handler();
@@ -183,8 +179,8 @@ setupChannel = function(channel) {
     channel.on('typingEnded', hideTypingStarted);
     channel.on('memberJoined', notifyMemberJoined);
     channel.on('memberLeft', notifyMemberLeft);
-    inputText.prop('disabled', false).focus();
-    messageList.text('');
+    $inputText.prop('disabled', false).focus();
+    $messageList.text('');
   });
 };
 
@@ -218,7 +214,7 @@ addMessageToList = function(message) {
     rowDiv.addClass('own-message');
   }
 
-  messageList.append(rowDiv);
+  $messageList.append(rowDiv);
   scrollToMessageListBottom();
 };
 
@@ -235,20 +231,20 @@ notify = function(message) {
   row.loadTemplate('#member-notification-template', {
     status: message
   });
-  messageList.append(row);
+  $messageList.append(row);
   scrollToMessageListBottom();
 }
 
 showTypingStarted = function(member) {
-  typingPlaceholder.html(member.identity + ' is typing...');
+  $typingPlaceholder.html(member.identity + ' is typing...');
 }
 
 hideTypingStarted = function(member) {
-  typingPlaceholder.html('');
+  $typingPlaceholder.html('');
 }
 
 scrollToMessageListBottom = function() {
-  messageList.scrollTop(messageList[0].scrollHeight);
+  $messageList.scrollTop($messageList[0].scrollHeight);
 };
 
 updateChannelUI = function(selectedChannel) {
@@ -267,16 +263,16 @@ updateChannelUI = function(selectedChannel) {
 
 showAddChannelInput = function() {
   if (messagingClient) {
-    newChannelInputRow.css('display', 'block');
-    channelList.css('max-height', '69vh');
-    newChannelInput.focus();
+    $$newChannelInputRow.css('display', 'block');
+    $channelList.css('max-height', '69vh');
+    $newChannelInput.focus();
   }
 }
 
 hideAddChannelInput = function() {
-  newChannelInputRow.css('display', 'none');
-  channelList.css('max-height', '75vh');
-  newChannelInput.val('');
+  $$newChannelInputRow.css('display', 'none');
+  $channelList.css('max-height', '75vh');
+  $newChannelInput.val('');
 }
 
 addChannel = function(channel) {
@@ -300,7 +296,7 @@ addChannel = function(channel) {
     channelP.addClass('unselected-channel')
   }
 
-  channelList.append(rowDiv);
+  $channelList.append(rowDiv);
 };
 
 deleteCurrentChannel = function() {
@@ -331,14 +327,14 @@ selectChannel = function(event) {
 
 disconnectClient = function() {
   leaveCurrentChannel();
-  channelList.text('');
-  messageList.text('');
+  $channelList.text('');
+  $messageList.text('');
   channels = undefined;
-  statusRow.css('visibility', 'hidden');
-  messageList.css('height', '80%');
-  connectPanel.css('display', 'block');
-  inputText.removeClass('with-shadow');
-  typingRow.css('display', 'none');
+  $statusRow.css('visibility', 'hidden');
+  $messageList.css('height', '80%');
+  $connectPanel.css('display', 'block');
+  $inputText.removeClass('with-shadow');
+  $typingRow.css('display', 'none');
 }
 
 sortChannelsByName = function(channels) {
