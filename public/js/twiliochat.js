@@ -145,7 +145,7 @@ loadChannelList = function(handler) {
     channelArray = sortChannelsByName(channels);
     channelList.text('');
     channelArray.forEach(addChannel);
-    if (typeof handler === "function") {
+    if (typeof handler === 'function') {
       handler();
     }
   });
@@ -209,7 +209,7 @@ leaveCurrentChannel = function() {
 
 addMessageToList = function(message) {
   var rowDiv = $('<div>').addClass('row no-margin');
-  rowDiv.loadTemplate($("#message-template"), {
+  rowDiv.loadTemplate($('#message-template'), {
     username: message.author,
     date: getTodayDate(message.timestamp),
     body: message.body
@@ -240,7 +240,7 @@ notify = function(message) {
 }
 
 showTypingStarted = function(member) {
-  typingPlaceholder.html(member.identity + " is typing...");
+  typingPlaceholder.html(member.identity + ' is typing...');
 }
 
 hideTypingStarted = function(member) {
@@ -284,7 +284,7 @@ addChannel = function(channel) {
     generalChannel = channel;
   }
   var rowDiv = $('<div>').addClass('row channel-row');
-  rowDiv.loadTemplate("#channel-template", {
+  rowDiv.loadTemplate('#channel-template', {
     channelName: channel.friendlyName
   });
 
