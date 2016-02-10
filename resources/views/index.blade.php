@@ -86,7 +86,7 @@
     </script>
     <!-- JavaScript -->
     <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
-    <script src="{{ asset('js/jquery-throttle.min.js') }}"></script>
+    <script src="{{ asset('js/vendor/jquery-throttle.min.js') }}"></script>
     <script src="{{ asset('js/vendor/jquery.loadTemplate-1.4.4.min.js') }}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
