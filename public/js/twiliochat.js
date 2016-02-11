@@ -99,7 +99,7 @@ var twiliochat = (function() {
   }
 
   function refreshToken() {
-    fetchAccessToken(username, setNewToken);
+    fetchAccessToken(tc.username, setNewToken);
   }
 
   function setNewToken(tokenResponse) {
