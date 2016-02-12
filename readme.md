@@ -39,7 +39,7 @@ Laravel implementation of Twilio Chat
 
   Now you can access the application at `http://localhost:8000`.
 
-## Expose you localhost to the internet
+## Expose your localhost to the internet
 
 If you want your chat application to be reachable publicly in the internet, you can use
 a service like [ngrok](https://ngrok.com/).
