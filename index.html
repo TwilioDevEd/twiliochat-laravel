@@ -11,9 +11,9 @@
   width:100%;
 }</style><link rel="shortcut icon" href="//twilio.com/bundles/marketing/img/favicons/favicon.ico"><link rel="apple-touch-icon" href="//twilio.com/bundles/marketing/img/favicons/favicon_57.png"><link rel="apple-touch-icon" sizes="72x72" href="//twilio.com/bundles/marketing/img/favicons/favicon_72.png"><link rel="apple-touch-icon" sizes="114x114" href="//twilio.com/bundles/marketing/img/favicons/favicon_114.png"><link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"><link rel="stylesheet" href="viewsaurus.css"></head><body><div class="wrapper"><div id="viewsaurus" data-title="Twilio Chat"><div class="saurus-panes"><div class="saurus-prose"><div class="saurus-prose-header"><div class="title-outer"><span class="step-title">Twilio Chat</span></div></div><div class="saurus-nav-buttons"><div class="saurus-nav-button nav-overview"><div class="saurus-nav-button-inner"><i class="fa fa-fw fa-list"></i></div><div class="nav-divider"></div></div><div class="saurus-nav-button nav-previous"><div class="saurus-nav-button-inner"><a href=""> <i class="fa fa-fw fa-play fa-rotate-180"></i></a></div><div class="nav-divider"></div></div><div class="saurus-nav-button nav-next clickable"><div class="saurus-nav-button-inner"><a href="#1"> <i class="fa fa-fw fa-play"></i></a></div></div><div class="saurus-next-title"><span class="next-title-inner"></span></div></div><div class="saurus-progress-bar"></div><div class="saurus-start"><p>Learn to implement a simple chat application using Twilio IP Messaging Client</p><a href="#0">Start Tutorial</a></div><div class="saurus-content"><div data-title="Twilio Chat" class="chapter"><div data-title="Introduction" data-file="app/Http/routes.php" class="step"><h2 id="introduction">Introduction</h2>
 <p>Ready to implement a chat application using Twilio IP Messaging Client?</p>
-<p>This application allow users to exchange messages through different channels,
-using the Twilio IP Messaging API. On this example, we&#39;ll show how to use 
-this API capabilities to manage channels and their usages.</p>
+<p>This application allows users to exchange messages through different channels,
+using the Twilio IP Messaging API. On this example, we&#39;ll show how to use
+this API features to manage channels and to show it&#39;s usages.</p>
 <hr>
 <p><strong>See Also:</strong></p>
 <ul>
@@ -40,21 +40,21 @@ We&#39;ll see how to use these objects in the next step.</p>
 </ul>
 </div><div data-title="Token Generation Controller" data-file="app/Http/Controllers/TokenController.php" data-highlight="11-34" class="step"><h2 id="token-generation-controller">Token Generation Controller</h2>
 <p>On our controller we expose the endpoint responsible for providing a valid
-token. Using the information provided as parameters:</p>
+token using the provided parameters</p>
 <ul>
-<li><code>device</code>: identifies the device being used.  </li>
-<li><code>identity</code>: identifies the user itself.</li>
+<li><code>device</code>: identifies the device being used</li>
+<li><code>identity</code>: identifies the user itself</li>
 </ul>
 <p>Once we have used the <code>tokenService</code> object to generate a token we can use
 the AccessToken&#39;s method as <code>token.toJwt()</code> to get the token as a String.
 Then we just return the token as a JSON encoded string.</p>
 </div><div data-title="Initializing the Client" data-file="public/js/twiliochat.js" data-highlight="81-88,91-93" class="step"><h2 id="initializing-the-ip-messaging-client">Initializing the IP Messaging Client</h2>
-<p>On our client, we fetch a new Token using a POST request to our endpoint.</p>
+<p>Our client fetches a new Token by making a POST request to our endpoint.</p>
 <p>With the token we can create a new <code>Twilio.AccessManager</code> that
 is used to initialize our <code>Twilio.IPMessaging.Client</code>.</p>
 </div><div data-title="Getting the Channel List" data-file="public/js/twiliochat.js" data-highlight="124-131" class="step"><h2 id="getting-the-channel-list">Getting the Channel List</h2>
-<p>After initializing the client, we can call its method <code>getChannels</code> to
-retrieve all visible channels. The method returns a promise which we use
+<p>After initializing the client we can call the <code>getChannels</code> method to
+retrieve all visible channels. This method returns a promise which we use
 to show the list of channels retrieved on the UI.</p>
 <hr>
 <p><strong> See Also </strong></p>
@@ -67,10 +67,10 @@ If the channel doesn&#39;t exist, we&#39;ll create one with that name. The scope
 this example application will show you how to work only with public channels,
 but the IP Messaging client allows you to create private channels and handle
 invitations.</p>
-<p>Notice we set a unique name for the general channel as we don&#39;t want to
+<p>Notice: we set a unique name for the general channel since we don&#39;t want to
 create a new general channel every time we start the application.</p>
 </div><div data-title="Listen to Channel Events" data-file="public/js/twiliochat.js" data-highlight="161-165" class="step"><h2 id="listen-to-channel-events">Listen to Channel Events</h2>
-<p>Next we listen for channel events. In our case, we&#39;re setting listeners to the
+<p>Next we listen for channel events. In our case we&#39;re setting listeners to the
 following events:</p>
 <ul>
 <li><code>messageAdded</code>: When another member sends a message to the channel you are connected to.</li>
@@ -86,7 +86,7 @@ following events:</p>
 <li><a href="https://media.twiliocdn.com/sdk/rtc/js/ip-messaging/releases/0.9.2/docs/api/Channel.html">Channel API</a></li>
 </ul>
 </div><div data-title="Listen to Client Events" data-file="public/js/twiliochat.js" data-highlight="96-98" class="step"><h2 id="listen-to-client-events">Listen to Client Events</h2>
-<p>Just like with channels, we can register handlers for events on the Client:</p>
+<p>Just like with channels we can register handlers for events on the Client:</p>
 <ul>
 <li><code>channelAdded</code>: When a channel becomes visible to the Client.</li>
 <li><code>channelRemoved</code>: When a channel is no longer visible to the Client.</li>
@@ -113,8 +113,8 @@ messaging/releases/0.9.2/docs/api/Client.html#createChannel">here</a>.</p>
 as the <code>selectedChannel</code>. The <code>selectChannel</code> method takes care of joining
 to the selected channel and setting up the <code>selectedChannel</code>.</p>
 </div><div data-title="Deleting a Channel" data-file="public/js/twiliochat.js" data-highlight="286-298" class="step"><h2 id="deleting-a-channel">Deleting a Channel</h2>
-<p>Deleting a channel is even more simple than creating one. The application
-lets the user delete the channel they are currently joined to through the
+<p>Deleting a channel is easier than creating one. The application
+lets the user delete the channel they are currently on through the
 &quot;delete current channel&quot; link. The only thing you need to do to
 actually delete the channel from Twilio, is call the <code>delete</code> method
 on the channel you are trying to delete. Like other methods on the <code>Channel</code>
@@ -135,7 +135,7 @@ to check out these other tutorials:</p>
 over a voice call or SMS text messages.</p>
 <h2 id="did-this-help-">Did this help?</h2>
 <p>Thanks for checking out this tutorial! If you have any feedback to share
-with us, we&#39;d love to hear it. Tweet
+with us we&#39;d love to hear it. Tweet
 <a href="http://twitter.com/twilio">@twilio</a> to let us know what you think.</p>
 </div></div>
 <div class="saurus-files" style="display:none;"><textarea class="saurus-file" data-file="app/Http/routes.php" data-mode="php">PD9waHAKCi8qCnwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQp8IFJvdXRlcyBGaWxlCnwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQp8CnwgSGVyZSBpcyB3aGVyZSB5b3Ugd2lsbCByZWdpc3RlciBhbGwgb2YgdGhlIHJvdXRlcyBpbiBhbiBhcHBsaWNhdGlvbi4KfCBJdCdzIGEgYnJlZXplLiBTaW1wbHkgdGVsbCBMYXJhdmVsIHRoZSBVUklzIGl0IHNob3VsZCByZXNwb25kIHRvCnwgYW5kIGdpdmUgaXQgdGhlIGNvbnRyb2xsZXIgdG8gY2FsbCB3aGVuIHRoYXQgVVJJIGlzIHJlcXVlc3RlZC4KfAoqLwoKUm91dGU6OmdldCgKICAgICcvJywgWydhcycgPT4gJ2hvbWUnLCBmdW5jdGlvbiAoKSB7CiAgICAgICAgcmV0dXJuIHJlc3BvbnNlKCktPnZpZXcoJ2luZGV4Jyk7CiAgICB9XQopOwoKUm91dGU6OnBvc3QoCiAgICAnL3Rva2VuJywKICAgIFsndXNlcycgPT4gJ1Rva2VuQ29udHJvbGxlckBnZW5lcmF0ZScsICdhcycgPT4gJ3Rva2VuLWdlbmVyYXRlJ10KKTsKCi8qCnwtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQp8IEFwcGxpY2F0aW9uIFJvdXRlcwp8LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0KfAp8IFRoaXMgcm91dGUgZ3JvdXAgYXBwbGllcyB0aGUgIndlYiIgbWlkZGxld2FyZSBncm91cCB0byBldmVyeSByb3V0ZQp8IGl0IGNvbnRhaW5zLiBUaGUgIndlYiIgbWlkZGxld2FyZSBncm91cCBpcyBkZWZpbmVkIGluIHlvdXIgSFRUUAp8IGtlcm5lbCBhbmQgaW5jbHVkZXMgc2Vzc2lvbiBzdGF0ZSwgQ1NSRiBwcm90ZWN0aW9uLCBhbmQgbW9yZS4KfAoqLwoKUm91dGU6Omdyb3VwKFsnbWlkZGxld2FyZScgPT4gWyd3ZWInXV0sIGZ1bmN0aW9uICgpIHsKICAgIC8vCn0pOwo=</textarea>
