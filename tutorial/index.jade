@@ -33,8 +33,8 @@
       credentials.
 
       With Laravel we must create a provider that will inject the
-      `Services_Twilio_AccessToken` object in the controller, the same goes for
-      `Services_Twilio_Auth_IpMessagingGrant` inside `TwilioIPMGrantProvider.php`.
+      `AccessToken` object in the controller, the same goes for
+      `IpMessagingGrant` inside `TwilioIPMGrantProvider.php`.
       We'll see how to use these objects in the next step.
 
       ---
@@ -54,8 +54,8 @@
       * `device`: identifies the device being used
       * `identity`: identifies the user itself
 
-      Once we have used the `tokenService` object to generate a token we can use
-      the AccessToken's method as `token.toJwt()` to get the token as a String.
+      Once we have used the `AccessToken` object to generate a token we can use
+      the AccessToken's method `token.toJWT()` to get the token as a String.
       Then we just return the token as a JSON encoded string.
 
   .step(data-title='Initializing the Client',
@@ -201,6 +201,6 @@
 
       ## Did this help?
 
-      Thanks for checking out this tutorial! If you have any feedback to share
-      with us we'd love to hear it. Tweet
-      [@twilio](http://twitter.com/twilio) to let us know what you think.
+      Thanks for checking this tutorial out! If you have any feedback to share with us,
+      we'd love to hear it. [Contact the Twilio Developer Education Team](mailto:deved-oss@twilio.com)
+      to let us know what you think.
