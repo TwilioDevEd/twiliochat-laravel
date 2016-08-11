@@ -3,12 +3,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Services_Twilio_AccessToken as AccessToken;
-use Services_Twilio_Auth_IpMessagingGrant as IPMGrant;
+use Twilio\Jwt\AccessToken;
+use Twilio\Jwt\Grants\IpMessagingGrant;
 
 class TokenController extends Controller
 {
-    public function generate(Request $request, AccessToken $accessToken, IPMGrant $ipmGrant)
+    public function generate(Request $request, AccessToken $accessToken, IpMessagingGrant $ipmGrant)
     {
         $appName = "TwilioChat";
         $deviceId = $request->input("device");

@@ -3,15 +3,18 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Twilio\Jwt\AccessToken;
+use Twilio\Jwt\Grants\IpMessagingGrant;
 
 class TokenControllerTest extends TestCase
 {
     public function testGenerateToken()
     {
-        $mockTwilioAccessToken = Mockery::mock('Services_Twilio_AccessToken')
-                                    ->makePartial();
-        $mockTwilioIPMGrant = Mockery::mock('Services_Twilio_Auth_IpMessagingGrant')
-                                  ->makePartial();
+        $mockTwilioAccessToken = Mockery::mock(AccessToken::class)
+            ->makePartial();
+        $mockTwilioIPMGrant = Mockery::mock(IpMessagingGrant::class)
+            ->makePartial();
+
         $mockTwilioIPMGrant
             ->shouldReceive('setServiceSid')
             ->with(config('services.twilio')['ipmServiceSid'])
@@ -23,11 +26,11 @@ class TokenControllerTest extends TestCase
             ->once();
 
         $this->app->instance(
-            'Services_Twilio_AccessToken',
+            AccessToken::class,
             $mockTwilioAccessToken
         );
         $this->app->instance(
-            'Services_Twilio_Auth_IpMessagingGrant',
+            IpMessagingGrant::class,
             $mockTwilioIPMGrant
         );
 

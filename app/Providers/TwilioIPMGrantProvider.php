@@ -1,7 +1,8 @@
 <?php
 namespace App\Providers;
+
 use Illuminate\Support\ServiceProvider;
-use Services_Twilio_Auth_IpMessagingGrant;
+use Twilio\Jwt\Grants\IpMessagingGrant;
 
 class TwilioIPMGrantProvider extends ServiceProvider
 {
@@ -13,8 +14,8 @@ class TwilioIPMGrantProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            'Services_Twilio_Auth_IpMessagingGrant', function ($app) {
-                return new Services_Twilio_Auth_IpMessagingGrant();
+            IpMessagingGrant::class, function ($app) {
+                return new IpMessagingGrant();
             }
         );
     }
