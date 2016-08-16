@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c795b4ce0216356c3d0d7cdbd06370e0",
-    "content-hash": "8bddc3b07c43b0b38ee41c7db3ce0ea0",
+    "hash": "0682c5ddbda173569be2854c4db6a085",
+    "content-hash": "cea657ea5a0f5b9e72d18701ef605564",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1731,22 +1731,23 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "5.0.0-RC20",
+            "version": "5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php.git",
-                "reference": "15bf7cca6f5f3b25a6a265385d16dd51af53e019"
+                "reference": "c735e12e3c82679b7864888c992ae9bfb1b8ae80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/15bf7cca6f5f3b25a6a265385d16dd51af53e019",
-                "reference": "15bf7cca6f5f3b25a6a265385d16dd51af53e019",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/c735e12e3c82679b7864888c992ae9bfb1b8ae80",
+                "reference": "c735e12e3c82679b7864888c992ae9bfb1b8ae80",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
+                "apigen/apigen": "^4.1",
                 "phpunit/phpunit": "4.5.*"
             },
             "type": "library",
@@ -1772,7 +1773,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2016-08-11 17:20:07"
+            "time": "2016-08-15 20:45:49"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -3200,9 +3201,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "twilio/sdk": 5
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
