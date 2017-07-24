@@ -22,10 +22,10 @@ Laravel implementation of Twilio Chat
   [Twilio Account Settings](https://www.twilio.com/user/account/settings).
   You need to create an API key that will give you a `TWILIO_API_KEY` and a
   `TWILIO_API_SECRET`. For that purpose click
-  [here](https://www.twilio.com/user/account/ip-messaging/dev-tools/api-keys).
+  [here](https://www.twilio.com/console/dev-tools/api-keys).
 
-  For `TWILIO_IPM_SERVICE_SID` you can click [here](https://www.twilio.com/user/account/ip-messaging/services),
-  where you must create an IP Messaging Service. When the service is created you'll
+  For `TWILIO_IPM_SERVICE_SID` you can click [here](https://www.twilio.com/console/chat/dashboard),
+  where you must create a Programmable Chat Service. When the service is created you'll
   have access to the service's SID.
 
 1. Generate an `APP_KEY`
