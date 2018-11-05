@@ -1,6 +1,6 @@
 language: php
 php:
-- 5.5
+- 7.1
 install:
 - composer install
 - cd public/ && npm install
@@ -17,4 +17,4 @@ env:
   - TWILIO_ACCOUNT_SID=ACXXXXXXXXXXXXXXX
   - TWILIO_API_KEY=SKXXXXXXXXXXXXXX
   - TWILIO_API_SECRET=secretkey
-  - TWILIO_IPM_SERVICE_SID=ISXXXXXXXXXXXXXXX
+  - TWILIO_CHAT_SERVICE_SID=ISXXXXXXXXXXXXXXX

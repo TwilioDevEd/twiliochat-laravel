@@ -10,12 +10,12 @@ Laravel implementation of Twilio Chat
 1. Install the application's dependencies with [Composer](https://getcomposer.org/)
 
    ```bash
-   $ composer install
+   composer install
    ```
 1. Copy the sample configuration file and edit it to match your configuration
 
    ```bash
-   $ cp .env.example .env
+   cp .env.example .env
    ```
 
   You can find your `TWILIO_ACCOUNT_SID` in your
@@ -24,20 +24,20 @@ Laravel implementation of Twilio Chat
   `TWILIO_API_SECRET`. For that purpose click
   [here](https://www.twilio.com/console/dev-tools/api-keys).
 
-  For `TWILIO_IPM_SERVICE_SID` you can click [here](https://www.twilio.com/console/chat/dashboard),
+  For `TWILIO_CHAT_SERVICE_SID` you can click [here](https://www.twilio.com/console/chat/dashboard),
   where you must create a Programmable Chat Service. When the service is created you'll
   have access to the service's SID.
 
 1. Generate an `APP_KEY`
 
    ```bash
-   $ php artisan key:generate
+   php artisan key:generate
    ```
 
 1. Run the application using Artisan
 
   ```bash
-  $ php artisan serve
+  php artisan serve
   ```
 
   Now you can access the application at `http://localhost:8000`.
@@ -50,7 +50,7 @@ a service like [ngrok](https://ngrok.com/).
 1. Expose the application to the wider Internet
 
    ```bash
-   $ ngrok http 8000
+   ngrok http 8000
    ```
 
   It is `artisan serve` default behavior to use `http://localhost:8000` when
@@ -64,7 +64,7 @@ a service like [ngrok](https://ngrok.com/).
   address, like this:
 
   ```bash
-  $ php artisan serve --host=127.0.0.1
+  php artisan serve --host=127.0.0.1
   ```
 
 ### Dependencies
@@ -77,7 +77,7 @@ This application uses this Twilio helper library
 1. Run at the top-level directory
 
    ```bash
-   $ phpunit
+   vendor/bin/phpunit
    ```
    If you don't have phpunit installed on your system, you can follow [these
    instructions](https://phpunit.de/manual/current/en/installation.html) to
@@ -86,5 +86,5 @@ This application uses this Twilio helper library
 1. Run javascript tests
 
    ```bash
-   $ cd public && npm install && npm test
+   cd public && npm install && npm test
    ```
