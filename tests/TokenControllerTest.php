@@ -4,34 +4,28 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Twilio\Jwt\AccessToken;
-use Twilio\Jwt\Grants\IpMessagingGrant;
+use Twilio\Jwt\Grants\ChatGrant;
 
 class TokenControllerTest extends TestCase
 {
     public function testGenerateToken()
     {
-        $mockTwilioAccessToken = Mockery::mock(AccessToken::class)
-            ->makePartial();
-        $mockTwilioIPMGrant = Mockery::mock(IpMessagingGrant::class)
+        $mockTwilioChatGrant = Mockery::mock(ChatGrant::class)
             ->makePartial();
 
-        $mockTwilioIPMGrant
+        $mockTwilioChatGrant
             ->shouldReceive('setServiceSid')
-            ->with(config('services.twilio')['ipmServiceSid'])
+            ->with(config('services.twilio')['chatServiceSid'])
             ->once();
 
-        $mockTwilioIPMGrant
+        $mockTwilioChatGrant
             ->shouldReceive('setEndpointId')
             ->with('TwilioChat:username:browser')
             ->once();
 
         $this->app->instance(
-            AccessToken::class,
-            $mockTwilioAccessToken
-        );
-        $this->app->instance(
-            IpMessagingGrant::class,
-            $mockTwilioIPMGrant
+            ChatGrant::class,
+            $mockTwilioChatGrant
         );
 
         // When
@@ -42,11 +36,12 @@ class TokenControllerTest extends TestCase
              'identity' => 'username',
              '_token' => csrf_token()]
         );
+        
         $JSONResponse = json_decode($response->getContent(), true);
 
         // Then
         $this->assertCount(2, $JSONResponse);
-        $this->assertEquals($JSONResponse['identity'], 'username');
+        $this->assertEquals('username', $JSONResponse['identity']);
         $this->assertNotNull($JSONResponse['token']);
     }
 }

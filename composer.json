@@ -6,12 +6,12 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "twilio/sdk": "^5.0",
+        "twilio/sdk": "^5.24",
         "laravel/framework": "5.2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
+        "mockery/mockery": "0.9.5",
         "phpunit/phpunit": "~4.0",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*"

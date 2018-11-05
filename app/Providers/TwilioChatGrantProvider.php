@@ -2,9 +2,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Twilio\Jwt\Grants\IpMessagingGrant;
+use Twilio\Jwt\Grants\ChatGrant;
 
-class TwilioIPMGrantProvider extends ServiceProvider
+class TwilioChatGrantProvider extends ServiceProvider
 {
     /**
      * Register the application services.
@@ -14,8 +14,8 @@ class TwilioIPMGrantProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(
-            IpMessagingGrant::class, function ($app) {
-                return new IpMessagingGrant();
+            ChatGrant::class, function ($app) {
+                return new ChatGrant();
             }
         );
     }

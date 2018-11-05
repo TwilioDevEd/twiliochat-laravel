@@ -18,7 +18,7 @@ return [
         'accountSid' => env('TWILIO_ACCOUNT_SID'),
         'apiKey' => env('TWILIO_API_KEY'),
         'apiSecret' => env('TWILIO_API_SECRET'),
-        'ipmServiceSid' => env('TWILIO_IPM_SERVICE_SID'),
+        'chatServiceSid' => env('TWILIO_CHAT_SERVICE_SID'),
     ],
 
 ];

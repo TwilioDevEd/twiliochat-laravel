@@ -4,26 +4,26 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Twilio\Jwt\AccessToken;
-use Twilio\Jwt\Grants\IpMessagingGrant;
+use Twilio\Jwt\Grants\ChatGrant;
 
 class TokenController extends Controller
 {
-    public function generate(Request $request, AccessToken $accessToken, IpMessagingGrant $ipmGrant)
+    public function generate(Request $request, AccessToken $accessToken, ChatGrant $chatGrant)
     {
         $appName = "TwilioChat";
         $deviceId = $request->input("device");
         $identity = $request->input("identity");
 
-        $TWILIO_IPM_SERVICE_SID = config('services.twilio')['ipmServiceSid'];
+        $TWILIO_CHAT_SERVICE_SID = config('services.twilio')['chatServiceSid'];
 
         $endpointId = $appName . ":" . $identity . ":" . $deviceId;
 
         $accessToken->setIdentity($identity);
 
-        $ipmGrant->setServiceSid($TWILIO_IPM_SERVICE_SID);
-        $ipmGrant->setEndpointId($endpointId);
+        $chatGrant->setServiceSid($TWILIO_CHAT_SERVICE_SID);
+        $chatGrant->setEndpointId($endpointId);
 
-        $accessToken->addGrant($ipmGrant);
+        $accessToken->addGrant($chatGrant);
 
         $response = array(
             'identity' => $identity,
