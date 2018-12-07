@@ -89,17 +89,16 @@ var twiliochat = (function() {
   }
 
   function connectMessagingClient(token) {
-    // Initialize the IP messaging client
+    // Initialize the Chat messaging client
     tc.accessManager = new Twilio.AccessManager(token);
-    tc.messagingClient = new Twilio.Chat.Client(token);
-    tc.messagingClient.initialize()
-      .then(function() {
-        updateConnectedUI();
-        tc.loadChannelList(tc.joinGeneralChannel);
-        tc.messagingClient.on('channelAdded', $.throttle(tc.loadChannelList));
-        tc.messagingClient.on('channelRemoved', $.throttle(tc.loadChannelList));
-        tc.messagingClient.on('tokenExpired', refreshToken);
-      });
+    Twilio.Chat.Client.create(token).then(function(client) {
+      tc.messagingClient = client;
+      updateConnectedUI();
+      tc.loadChannelList(tc.joinGeneralChannel);
+      tc.messagingClient.on('channelAdded', $.throttle(tc.loadChannelList));
+      tc.messagingClient.on('channelRemoved', $.throttle(tc.loadChannelList));
+      tc.messagingClient.on('tokenExpired', refreshToken);
+    });
   }
 
   function refreshToken() {
