@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "470ad7f3b3948b51e2600d5b07434ff2",
+    "content-hash": "16e2d68d641c51b2810d439566a0de36",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -247,7 +247,7 @@
             "time": "2015-04-20T18:58:01+00:00"
         },
         {
-            "name": "jeremeamia/SuperClosure",
+            "name": "jeremeamia/superclosure",
             "version": "2.4.0",
             "source": {
                 "type": "git",
@@ -2650,6 +2650,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2015-10-02T06:51:40+00:00"
         },
         {
@@ -3026,25 +3027,25 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v3.0.9",
+            "version": "v3.4.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "b8999c1f33c224b2b66b38253f5e3a838d0d0115"
+                "reference": "f819f71ae3ba6f396b4c015bd5895de7d2f1f85f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/b8999c1f33c224b2b66b38253f5e3a838d0d0115",
-                "reference": "b8999c1f33c224b2b66b38253f5e3a838d0d0115",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/f819f71ae3ba6f396b4c015bd5895de7d2f1f85f",
+                "reference": "f819f71ae3ba6f396b4c015bd5895de7d2f1f85f",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.9"
+                "php": "^5.5.9|>=7.0.8"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
@@ -3061,12 +3062,12 @@
             ],
             "authors": [
                 {
-                    "name": "Jean-François Simon",
-                    "email": "jeanfrancois.simon@sensiolabs.com"
-                },
-                {
                     "name": "Fabien Potencier",
                     "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Jean-François Simon",
+                    "email": "jeanfrancois.simon@sensiolabs.com"
                 },
                 {
                     "name": "Symfony Community",
@@ -3075,7 +3076,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2016-06-29T05:40:00+00:00"
+            "time": "2019-10-01T11:57:37+00:00"
         },
         {
             "name": "symfony/dom-crawler",
