@@ -18,11 +18,6 @@ class TokenControllerTest extends TestCase
             ->with(config('services.twilio')['chatServiceSid'])
             ->once();
 
-        $mockTwilioChatGrant
-            ->shouldReceive('setEndpointId')
-            ->with('TwilioChat:username:browser')
-            ->once();
-
         $this->app->instance(
             ChatGrant::class,
             $mockTwilioChatGrant
@@ -32,8 +27,7 @@ class TokenControllerTest extends TestCase
         $response = $this->call(
             'POST',
              route('token-generate'),
-             ['device' => 'browser',
-             'identity' => 'username',
+             ['identity' => 'username',
              '_token' => csrf_token()]
         );
         
