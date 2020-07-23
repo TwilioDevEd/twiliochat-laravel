@@ -92,7 +92,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
     <!-- Twilio Common helpers and Twilio Chat JavaScript libs from CDN. -->
     <script src="//media.twiliocdn.com/sdk/js/common/v0.1/twilio-common.min.js"></script>
-    <script src="//media.twiliocdn.com/sdk/js/chat/v3.0/twilio-chat.min.js"></script>
+    <script src="//media.twiliocdn.com/sdk/js/chat/v4.0/twilio-chat.min.js"></script>
     <script src="{{ asset('js/twiliochat.js') }}"></script>
     <script src="{{ asset('js/dateformatter.js') }}"></script>
   </body>
