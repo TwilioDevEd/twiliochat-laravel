@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "470ad7f3b3948b51e2600d5b07434ff2",
+    "content-hash": "03d5c75a6b27452c9b74649c6ba1c84b",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -1751,29 +1751,33 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "5.24.2",
+            "version": "6.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php.git",
-                "reference": "e0438e0f4f3301fd750d43bac159fab6bf59c5a8"
+                "reference": "09e8cf28d1c53cb53472a917cddfdaeb4d8105f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/e0438e0f4f3301fd750d43bac159fab6bf59c5a8",
-                "reference": "e0438e0f4f3301fd750d43bac159fab6bf59c5a8",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/09e8cf28d1c53cb53472a917cddfdaeb4d8105f5",
+                "reference": "09e8cf28d1c53cb53472a917cddfdaeb4d8105f5",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0"
+                "php": ">=7.1.0"
             },
             "require-dev": {
-                "apigen/apigen": "^4.1",
-                "phpunit/phpunit": "4.5.*"
+                "guzzlehttp/guzzle": "^6.3 || ^7.0",
+                "phpunit/phpunit": ">=4.5",
+                "theseer/phpdox": "^0.12.0"
+            },
+            "suggest": {
+                "guzzlehttp/guzzle": "An HTTP client to execute the API requests"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Twilio\\": "Twilio/"
+                    "Twilio\\": "src/Twilio/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1793,7 +1797,11 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2018-10-29T12:32:45+00:00"
+            "support": {
+                "issues": "https://github.com/twilio/twilio-php/issues",
+                "source": "https://github.com/twilio/twilio-php/tree/6.15.1"
+            },
+            "time": "2020-12-16T21:07:31+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -3247,5 +3255,6 @@
     "platform": {
         "php": ">=5.5.9"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
